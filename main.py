@@ -1,6 +1,5 @@
-from logging import NullHandler
-
 import requests
+import socket
 
 def check_subdomain(domain, time_out:float):
     print(f"Search for subdomain for {domain}")
@@ -17,20 +16,29 @@ def check_subdomain(domain, time_out:float):
 
     print(f"[*]Finding {len(subdomain)} potential hosts, starting validation\n")
 
+    host_up = 0
     for sub in subdomain:
         try:
+            try:
+                ip_address = socket.gethostbyname(sub)
+            except socket.gaierror:
+                ip_address = "No IP"
+
             sub_url = f"http://{sub}"
             res = requests.get(url=sub_url, timeout=time_out)
 
             status = res.status_code
             if status == 200:
-                print(f"[+] {sub: <40} | Status: {status} (OK)")
+                print(f"[+] {sub: <40} | {ip_address: <15} | Status: {status} (OK)")
+                host_up+=1
             elif status == 403:
-                print(f"[!] {sub: <40} | Status: {status} Forbidden")
+                print(f"[!] {sub: <40} | {ip_address: <15} | Status: {status} Forbidden")
             else:
-                print(f"[-] {sub: <40} | Status: {status}")
+                print(f"[-] {sub: <40} | {ip_address: <15} | Status: {status}")
         except requests.exceptions.RequestException:
             pass
+
+    print(f"{host_up} Host UP (↑)")
 
 if __name__ == "__main__":
     domain_name = input("Domain name input: ")
