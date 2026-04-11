@@ -1,7 +1,33 @@
-from xxlimited_35 import Null
-
 import requests
 import socket
+from concurrent.futures import ThreadPoolExecutor
+
+def validate_subdomain(sub, time_out, show_available):
+
+    try:
+        try:
+            ip_address = socket.gethostbyname(sub)
+        except socket.gaierror:
+            ip_address = "No IP"
+        sub_url = f"http://{sub}"
+        res = requests.get(url=sub_url, timeout=time_out)
+
+        status = res.status_code
+        server = res.headers.get('Server', 'Unknown')
+        if status == 200:
+            print(f"[+] {sub: <40} | {ip_address: <15} | {server} | Status: {status} (OK)")
+            return 1
+        elif not show_available:
+            if status == 403 and not show_available:
+                print(f"[!] {sub: <40} | {ip_address: <15} | {server} | Status: {status} Forbidden")
+            else:
+                print(f"[-] {sub: <40} | {ip_address: <15} | {server} | Status: {status}")
+        return 0
+    except requests.exceptions.RequestException:
+        return 0
+
+
+
 
 def check_subdomain(domain, time_out:float, show_available: bool = False):
     print(f"Search for subdomain for {domain}")
@@ -16,32 +42,20 @@ def check_subdomain(domain, time_out:float, show_available: bool = False):
     lines = response.text.strip().split("\n")
     subdomain = [line.split(",")[0] for line in lines]
 
-    print(f"[*]Finding {len(subdomain)} potential hosts, starting validation\n")
+    print(f"[*]Found {len(subdomain)} potential hosts, starting validation\n")
 
-    host_up = 0
-    for sub in subdomain:
-        try:
-            try:
-                ip_address = socket.gethostbyname(sub)
-            except socket.gaierror:
-                ip_address = "No IP"
+    host_up_count = 0
 
-            sub_url = f"http://{sub}"
-            res = requests.get(url=sub_url, timeout=time_out)
+    try:
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            result = list(executor.map(lambda s: validate_subdomain(s, time_out, show_available), subdomain))
+            host_up_count = sum(result)
+    except KeyboardInterrupt:
+        print("\n[!]Process stop by user...")
+        exit(0)
 
-            status = res.status_code
-            if status == 200:
-                print(f"[+] {sub: <40} | {ip_address: <15} | Status: {status} (OK)")
-                host_up+=1
-            elif not show_available:
-                if status == 403 and not show_available:
-                    print(f"[!] {sub: <40} | {ip_address: <15} | Status: {status} Forbidden")
-                else:
-                    print(f"[-] {sub: <40} | {ip_address: <15} | Status: {status}")
-        except requests.exceptions.RequestException:
-            pass
+    print(f"{host_up_count} Host UP (↑)")
 
-    print(f"{host_up} Host UP (↑)")
 
 if __name__ == "__main__":
     domain_name = input("Domain name input: ").strip()
