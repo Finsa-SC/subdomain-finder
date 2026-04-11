@@ -1,0 +1,96 @@
+# =========================
+# 🐍 PYTHON
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# virtual environment
+.venv/
+venv/
+env/
+ENV/
+
+# distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# logs
+*.log
+
+# =========================
+# 🔐 ENV & SECRET
+# =========================
+.env
+.env.*
+*.env
+
+# =========================
+# 🧠 IDE / EDITOR
+# =========================
+
+# PyCharm
+.idea/
+
+# VSCode
+.vscode/
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+
+# =========================
+# 🖥️ OS FILES
+# =========================
+
+# Linux
+*~
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# =========================
+# 📦 CACHE / TEMP
+# =========================
+.cache/
+tmp/
+temp/
+
+# =========================
+# 🔧 BUILD / OUTPUT
+# =========================
+out/
+target/
+
+# =========================
+# 🧪 TEST / COVERAGE
+# =========================
+.coverage
+htmlcov/
+
+# =========================
+# 🐳 DOCKER (optional)
+# =========================
+*.pid
+*.seed
+
+# =========================
+# 🔑 SECURITY (IMPORTANT)
+# =========================
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+
+# =========================
+# 📁 MISC
+# =========================
+*.swp
+*.bak
+*.tmp
