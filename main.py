@@ -1,9 +1,13 @@
+from save_file import save_file_healty, save_file_problem
+
 import requests
 import socket
 from concurrent.futures import ThreadPoolExecutor
 
-def validate_subdomain(sub, time_out, show_available):
+healthy_ip = set()
+problem_ip = set()
 
+def validate_subdomain(sub, time_out, show_available):
     try:
         try:
             ip_address = socket.gethostbyname(sub)
@@ -16,12 +20,17 @@ def validate_subdomain(sub, time_out, show_available):
         server = res.headers.get('Server', 'Unknown')
         if status == 200:
             print(f"[+] {sub: <40} | {ip_address: <15} | {server} | Status: {status} (OK)")
+            healthy_ip.add(ip_address)
             return 1
         elif not show_available:
+            if status == 404:
+                print(f"[-] {sub: <40} | {ip_address: <15} | {server} | Status: {status}")
+                return 0
             if status == 403 and not show_available:
-                print(f"[!] {sub: <40} | {ip_address: <15} | {server} | Status: {status} Forbidden")
+                print(f"[!] {sub: <40} | {ip_address: <15} | {server} | Status: {status} [!Forbidden]")
             else:
                 print(f"[-] {sub: <40} | {ip_address: <15} | {server} | Status: {status}")
+            problem_ip.add(ip_address)
         return 0
     except requests.exceptions.RequestException:
         return 0
@@ -75,3 +84,8 @@ if __name__ == "__main__":
 
     show_available = show_available_host == "y"
     check_subdomain(domain_name, timeout, show_available)
+
+    write_file = input("Did you want to save the result? [y/N]: ")
+    if write_file.lower().strip() == "y":
+        save_file_healty(domain_name, healthy_ip)
+        save_file_problem(domain_name, problem_ip)
