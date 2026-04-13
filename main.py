@@ -58,7 +58,10 @@ def check_subdomain(domain, time_out:float, show_available: bool = False):
 
 
 if __name__ == "__main__":
-    domain_name = input("Domain name input: ").strip()
+    with open("assets/banner.txt", "r") as file:
+        print(file.read())
+
+    domain_name = input("\n\nDomain name input: ").strip()
     if not domain_name:
         print("Domain name required!")
         exit(1)
