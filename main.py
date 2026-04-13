@@ -1,4 +1,4 @@
-from save_file import save_file_healty, save_file_problem
+from save_file import save_file_healthy, save_file_problem
 
 import requests
 import socket
@@ -23,9 +23,9 @@ def validate_subdomain(sub, time_out, show_available):
             healthy_ip.add(ip_address)
             return 1
         elif not show_available:
-            if status == 404:
-                print(f"[-] {sub: <40} | {ip_address: <15} | {server} | Status: {status}")
-                return 0
+            # if status == 404:
+            #     print(f"[ ] {sub: <40} | {ip_address: <15} | {server} | Status: {status}")
+            #     return 0
             if status == 403 and not show_available:
                 print(f"[!] {sub: <40} | {ip_address: <15} | {server} | Status: {status} [!Forbidden]")
             else:
@@ -87,5 +87,5 @@ if __name__ == "__main__":
 
     write_file = input("Did you want to save the result? [y/N]: ")
     if write_file.lower().strip() == "y":
-        save_file_healty(domain_name, healthy_ip)
+        save_file_healthy(domain_name, healthy_ip)
         save_file_problem(domain_name, problem_ip)
