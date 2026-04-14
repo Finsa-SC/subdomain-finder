@@ -1,4 +1,4 @@
-from save_file import save_file_healthy, save_file_problem
+from save_file import save_file_healthy, save_file_problem, check_result_dir
 
 import requests
 import socket
@@ -83,9 +83,10 @@ if __name__ == "__main__":
         timeout = 3.0
 
     show_available = show_available_host == "y"
-    check_subdomain(domain_name, timeout, show_available)
+    # check_subdomain(domain_name, timeout, show_available)
 
     write_file = input("Did you want to save the result? [y/N]: ")
     if write_file.lower().strip() == "y":
+        check_result_dir()
         save_file_healthy(domain_name, healthy_ip)
         save_file_problem(domain_name, problem_ip)
