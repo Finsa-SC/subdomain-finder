@@ -44,12 +44,17 @@ def check_subdomain(domain, time_out:float, show_available: bool = False):
     url = f"https://api.hackertarget.com/hostsearch/?q={domain}"
     response = requests.get(url=url)
 
+    if "error" in response.text.lower():
+        print(f"[!] Error occurred: {response.text}")
+        exit(1)
     if response.status_code != 200:
         print("[!] Failed to access Hacker Target API")
-        return
+        exit(1)
 
     lines = response.text.strip().split("\n")
+
     subdomain = [line.split(",")[0] for line in lines]
+
 
     print(f"[*]Found {len(subdomain)} potential hosts, starting validation\n")
 
@@ -83,7 +88,7 @@ if __name__ == "__main__":
         timeout = 3.0
 
     show_available = show_available_host == "y"
-    # check_subdomain(domain_name, timeout, show_available)
+    check_subdomain(domain_name, timeout, show_available)
 
     write_file = input("Did you want to save the result? [y/N]: ")
     if write_file.lower().strip() == "y":

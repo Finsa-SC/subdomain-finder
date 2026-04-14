@@ -13,8 +13,8 @@ def check_result_dir():
     if not os.path.exists("recon_result"):
         os.makedirs("recon_result")
 
-def is_cloudflare(ips):
-    ip_obj = ipaddress.ip_address(ips)
+def is_cloudflare(ip):
+    ip_obj = ipaddress.ip_address(ip)
     for network in CLOUDFLARE_IPS:
         if ip_obj in ipaddress.ip_network(network):
             return True
