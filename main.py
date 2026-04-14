@@ -19,17 +19,17 @@ def validate_subdomain(sub, time_out, show_available):
         status = res.status_code
         server = res.headers.get('Server', 'Unknown')
         if status == 200:
-            print(f"[+] {sub: <40} | {ip_address: <15} | {server} | Status: {status} (OK)")
+            print(f"[+] {sub: <40} | {ip_address: <15} | {server: <15} | Status: {status} (OK)")
             healthy_ip.add(ip_address)
             return 1
         elif not show_available:
-            # if status == 404:
-            #     print(f"[ ] {sub: <40} | {ip_address: <15} | {server} | Status: {status}")
-            #     return 0
-            if status == 403 and not show_available:
-                print(f"[!] {sub: <40} | {ip_address: <15} | {server} | Status: {status} [!Forbidden]")
+            if status == 404:
+                print(f"[ ] {sub: <40} | {ip_address: <15} | {server: <15} | Status: {status}")
+                return 0
+            elif status == 403 and not show_available:
+                print(f"[!] {sub: <40} | {ip_address: <15} | {server: <15} | Status: {status} [!Forbidden]")
             else:
-                print(f"[-] {sub: <40} | {ip_address: <15} | {server} | Status: {status}")
+                print(f"[-] {sub: <40} | {ip_address: <15} | {server: <15} | Status: {status}")
             problem_ip.add(ip_address)
         return 0
     except requests.exceptions.RequestException:
