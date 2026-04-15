@@ -39,22 +39,26 @@ def validate_subdomain(sub, time_out, show_available):
 
 
 def check_subdomain(domain, time_out:float, show_available: bool = False):
-    print(f"Search for subdomain for {domain}")
+    if ".txt" not in domain:
+        print(f"Search for subdomain for {domain}")
 
-    url = f"https://api.hackertarget.com/hostsearch/?q={domain}"
-    response = requests.get(url=url)
+        url = f"https://api.hackertarget.com/hostsearch/?q={domain}"
+        response = requests.get(url=url)
 
-    if "error" in response.text.lower():
-        print(f"[!] Error occurred: {response.text}")
-        exit(1)
-    if response.status_code != 200:
-        print("[!] Failed to access Hacker Target API")
-        exit(1)
+        if "error" in response.text.lower():
+            print(f"[!] Error occurred: {response.text}")
+            exit(1)
+        if response.status_code != 200:
+            print("[!] Failed to access Hacker Target API")
+            exit(1)
+        raw_data = response.text
+    else:
+        with open(domain, "r")as f:
+            raw_data = f.read()
 
-    lines = response.text.strip().split("\n")
+    lines = raw_data.strip().split("\n")
 
     subdomain = [line.split(",")[0] for line in lines]
-
 
     print(f"[*]Found {len(subdomain)} potential hosts, starting validation\n")
 
@@ -75,10 +79,11 @@ if __name__ == "__main__":
     with open("assets/banner.txt", "r") as file:
         print(file.read())
 
-    domain_name = input("\n\nDomain name input: ").strip()
+    domain_name = input("\n\nDomain name input or TXT: ").strip()
     if not domain_name:
         print("Domain name required!")
         exit(1)
+
     timeout_input = input("Timeout: ").strip()
     show_available_host = input("Show only available host? [y/N]: ").lower().strip()
     try:
@@ -88,6 +93,7 @@ if __name__ == "__main__":
         timeout = 3.0
 
     show_available = show_available_host == "y"
+
     check_subdomain(domain_name, timeout, show_available)
 
     write_file = input("Did you want to save the result? [y/N]: ")
