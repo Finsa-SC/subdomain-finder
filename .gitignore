@@ -94,3 +94,10 @@ id_rsa.pub
 *.swp
 *.bak
 *.tmp
+
+# =========================
+# Project Directory
+# =========================
+recon_result
+*.txt
+!banner.txt
