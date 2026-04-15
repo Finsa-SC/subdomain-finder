@@ -15,15 +15,16 @@ THREAD = int(os.getenv("THREAD", 10))
 healthy_ip = set()
 problem_ip = set()
 
-def validate_subdomain(sub, time_out, show_available, show_verbose):
+def validate_subdomain(sub, time_out, show_available, show_verbose, show_redir):
     try:
         try:
             ip_address = socket.gethostbyname(sub)
         except socket.gaierror:
             ip_address = "No IP"
 
-        http_status, http_server = http_request(sub, time_out)
-        https_status, https_server = https_request(sub, time_out)
+        http_status, http_server, http_redir = http_request(sub, time_out)
+        https_status, https_server, https_redir = https_request(sub, time_out)
+
         server = http_server if http_status != None else https_server
 
         if show_verbose:
@@ -38,32 +39,36 @@ def validate_subdomain(sub, time_out, show_available, show_verbose):
                 status += "HTTP FORBIDDEN, "
             if https_status == 403:
                 status += "HTTPS FORBIDDEN"
+            if show_redir:
+                if "-" != http_redir:
+                    status += f"HTTP REDIR: {http_redir}"
+                if "-" != https_redir:
+                    status += f"HTTPS REDIR: {https_redir}"
             status += " ]"
-
         else:
             status = "(OK)" if http_status == 200 or https_status == 200 else "[!Forbidden]" if http_status == 403 or https_status == 403 else ""
 
         if server == None:
             return 0
         elif http_status == 200 or https_status == 200:
-            print(f"[+] {sub: <40} | {ip_address: <15} | {server: <15} | HTTP: {http_status or '-': <4} | HTTPS: {https_status or '-': <4} {status}")
+            print(f"[+] {sub: <40} | {ip_address: <15} | {server: <15} | HTTP: {str(http_status or '-'): <4} | HTTPS: {str(https_status or '-'): <4} {status}")
             healthy_ip.add(ip_address)
             return 1
         elif not show_available:
             if http_status == 404 or https_status == 404:
-                print(f"[ ] {sub: <40} | {ip_address: <15} | {server: <15} | HTTP: {http_status or '-': <4} | HTTPS: {https_status or '-': <4} {status}")
+                print(f"[ ] {sub: <40} | {ip_address: <15} | {server: <15} | HTTP: {str(http_status or '-'): <4} | HTTPS: {str(https_status or '-'): <4} {status}")
                 return 0
             elif http_status == 403 or https_status == 403:
-                print(f"[!] {sub: <40} | {ip_address: <15} | {server: <15} | HTTP: {http_status or '-': <4} | HTTPS: {https_status or '-': <4} {status}")
+                print(f"[!] {sub: <40} | {ip_address: <15} | {server: <15} | HTTP: {str(http_status or '-'): <4} | HTTPS: {str(https_status or '-'): <4} {status}")
             else:
-                print(f"[-] {sub: <40} | {ip_address: <15} | {server: <15} | HTTP: {http_status or '-': <4} | HTTPS: {https_status or '-': <4} {status}")
+                print(f"[-] {sub: <40} | {ip_address: <15} | {server: <15} | HTTP: {str(http_status or '-'): <4} | HTTPS: {str(https_status or '-'): <4} {status}")
             problem_ip.add(ip_address)
         return 0
     except requests.exceptions.RequestException:
         return 0
 
 
-def check_subdomain(domain, time_out:float, show_available: bool = False, show_verbose: bool = False):
+def check_subdomain(domain, time_out:float, show_available: bool = False, show_verbose: bool = False, show_redir: bool = False):
     if ".txt" not in domain:
         print(f"Search for subdomain for {domain}")
 
@@ -91,7 +96,7 @@ def check_subdomain(domain, time_out:float, show_available: bool = False, show_v
 
     try:
         with ThreadPoolExecutor(max_workers=THREAD) as executor:
-            result = list(executor.map(lambda s: validate_subdomain(s, time_out, show_available, show_verbose), subdomain))
+            result = list(executor.map(lambda s: validate_subdomain(s, time_out, show_available, show_verbose, show_redir), subdomain))
             host_up_count = sum(result)
     except KeyboardInterrupt:
         print("\n[!]Process stop by user...")
@@ -122,7 +127,12 @@ if __name__ == "__main__":
     show_available = show_available_host == "y"
     show_verbose = show_verbose_output == "y"
 
-    check_subdomain(domain_name, timeout, show_available, show_verbose)
+    show_redir_input = False
+    if show_verbose:
+        show_redir_input = input("Show redirect? targets? [y/N]: ").strip().lower()
+    show_redir = show_redir_input == "y"
+
+    check_subdomain(domain_name, timeout, show_available, show_verbose, show_redir)
     # check_subdomain("hosts.txt", 3.0, False, True)
 
     write_file = input("Did you want to save the result? [y/N]: ")
