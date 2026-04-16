@@ -9,6 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 
 ### Init env
+load_dotenv()
 TIMEOUT = float(os.getenv("TIMEOUT", 3.0))
 THREAD = int(os.getenv("THREAD", 10))
 
@@ -22,8 +23,8 @@ def validate_subdomain(sub, time_out, show_available, show_verbose, show_redir):
         except socket.gaierror:
             ip_address = "No IP"
 
-        http_status, http_server, http_redir = http_request(sub, time_out)
-        https_status, https_server, https_redir = https_request(sub, time_out)
+        http_status, http_server, http_redir, http_latency = http_request(sub, time_out)
+        https_status, https_server, https_redir, https_latency = https_request(sub, time_out)
 
         server = http_server if http_status != None else https_server
 
