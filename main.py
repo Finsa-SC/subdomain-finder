@@ -16,6 +16,16 @@ THREAD = int(os.getenv("THREAD", 10))
 healthy_ip = set()
 problem_ip = set()
 
+
+def sign(http_status, https_status) -> str:
+    if http_status == 200 or https_status == 200:
+        return "[*]"
+    elif http_status == 403 or https_status == 403:
+        return "[!]"
+    else:
+        return "[-]"
+
+
 def validate_subdomain(sub, time_out, show_available, show_verbose, show_redir):
     try:
         try:
@@ -25,6 +35,8 @@ def validate_subdomain(sub, time_out, show_available, show_verbose, show_redir):
 
         http_status, http_server, http_redir, http_latency = http_request(sub, time_out)
         https_status, https_server, https_redir, https_latency = https_request(sub, time_out)
+
+        signing = sign(http_status, https_status)
 
         server = http_server if http_status != None else https_server
 
@@ -52,18 +64,17 @@ def validate_subdomain(sub, time_out, show_available, show_verbose, show_redir):
         if server == None:
             return 0
         elif http_status == 200 or https_status == 200:
-            print(f"[+] {sub: <40} | {ip_address: <15} | {server: <15} | HTTP: {str(http_status or '-'): <4} | HTTPS: {str(https_status or '-'): <4} {status}")
+            print(f"{signing} {sub: <40} | {ip_address: <15} | {server: <15} | "
+                  f"HTTP: {str(http_status or '-')} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
+                  f"HTTPS: {str(https_status or '-')} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
             healthy_ip.add(ip_address)
             return 1
         elif not show_available:
-            if http_status == 404 or https_status == 404:
-                print(f"[ ] {sub: <40} | {ip_address: <15} | {server: <15} | HTTP: {str(http_status or '-'): <4} | HTTPS: {str(https_status or '-'): <4} {status}")
-                return 0
-            elif http_status == 403 or https_status == 403:
-                print(f"[!] {sub: <40} | {ip_address: <15} | {server: <15} | HTTP: {str(http_status or '-'): <4} | HTTPS: {str(https_status or '-'): <4} {status}")
-            else:
-                print(f"[-] {sub: <40} | {ip_address: <15} | {server: <15} | HTTP: {str(http_status or '-'): <4} | HTTPS: {str(https_status or '-'): <4} {status}")
+            print(f"{signing} {sub: <40} | {ip_address: <15} | {server: <15} | "
+                  f"HTTP: {str(http_status or '-')} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
+                  f"HTTPS: {str(https_status or '-')} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
             problem_ip.add(ip_address)
+            return 0
         return 0
     except requests.exceptions.RequestException:
         return 0
@@ -77,10 +88,10 @@ def check_subdomain(domain, time_out:float, show_available: bool = False, show_v
         response = requests.get(url=url)
 
         if "error" in response.text.lower():
-            print(f"[!] Error occurred: {response.text}")
+            print(f"[x] Error occurred: {response.text}")
             exit(1)
         if response.status_code != 200:
-            print("[!] Failed to access Hacker Target API")
+            print("[x] Failed to access Hacker Target API")
             exit(1)
         raw_data = response.text
     else:
