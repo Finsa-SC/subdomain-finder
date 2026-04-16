@@ -1,5 +1,6 @@
 from save_file import save_file_healthy, save_file_problem, check_result_dir
 from request import http_request, https_request
+from summary import ReconStats
 
 from dotenv import load_dotenv
 import os
@@ -26,6 +27,7 @@ def sign(http_status, https_status) -> str:
     else:
         return "[-]"
 
+stats = ReconStats()
 
 def validate_subdomain(sub, time_out, show_available, show_verbose, show_redir):
     try:
@@ -43,14 +45,14 @@ def validate_subdomain(sub, time_out, show_available, show_verbose, show_redir):
 
         if show_verbose:
             status = "[ "
-            if http_status == 200 and https_status != 200:
-                status += "HTTP ONLY, "
-            if https_status == 200 and http_status != 200:
-                status += "HTTPS ONLY, "
             if https_status == 200 and http_status == 200:
                 status += "HTTP and HTTPS, "
+            if http_status == 200 and https_status != 200:
+                status += "HTTP ONLY, "
             if http_status == 403:
                 status += "HTTP FORBIDDEN, "
+            if https_status == 200 and http_status != 200:
+                status += "HTTPS ONLY, "
             if https_status == 403:
                 status += "HTTPS FORBIDDEN"
             if show_redir:
@@ -62,6 +64,7 @@ def validate_subdomain(sub, time_out, show_available, show_verbose, show_redir):
         else:
             status = "(OK)" if http_status == 200 or https_status == 200 else "[!Forbidden]" if http_status == 403 or https_status == 403 else ""
 
+        stats.log(http_status, https_status)
         if server == None:
             return 0
         elif http_status == 200 or https_status == 200:
@@ -116,6 +119,7 @@ def check_subdomain(domain, time_out:float, show_available: bool = False, show_v
         exit(0)
 
     print(f"{host_up_count} Host UP (↑)")
+    stats.summary()
 
 
 if __name__ == "__main__":
