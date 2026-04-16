@@ -12,6 +12,7 @@ from concurrent.futures import ThreadPoolExecutor
 load_dotenv()
 TIMEOUT = float(os.getenv("TIMEOUT", 3.0))
 THREAD = int(os.getenv("THREAD", 10))
+DEBUG = bool(os.getenv("DEBUG"))
 
 healthy_ip = set()
 problem_ip = set()
@@ -65,14 +66,14 @@ def validate_subdomain(sub, time_out, show_available, show_verbose, show_redir):
             return 0
         elif http_status == 200 or https_status == 200:
             print(f"{signing} {sub: <40} | {ip_address: <15} | {server: <15} | "
-                  f"HTTP: {str(http_status or '-')} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
-                  f"HTTPS: {str(https_status or '-')} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
+                  f"HTTP: {str(http_status or '-'): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
+                  f"HTTPS: {str(https_status or '-'): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
             healthy_ip.add(ip_address)
             return 1
         elif not show_available:
             print(f"{signing} {sub: <40} | {ip_address: <15} | {server: <15} | "
-                  f"HTTP: {str(http_status or '-')} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
-                  f"HTTPS: {str(https_status or '-')} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
+                  f"HTTP: {str(http_status or '-'): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
+                  f"HTTPS: {str(https_status or '-'): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
             problem_ip.add(ip_address)
             return 0
         return 0
@@ -118,6 +119,10 @@ def check_subdomain(domain, time_out:float, show_available: bool = False, show_v
 
 
 if __name__ == "__main__":
+    if DEBUG:
+        check_subdomain("hosts.txt", 3.0, False, True)
+        exit(1)
+
     with open("assets/banner.txt", "r") as file:
         print(file.read())
 
@@ -145,7 +150,6 @@ if __name__ == "__main__":
     show_redir = show_redir_input == "y"
 
     check_subdomain(domain_name, timeout, show_available, show_verbose, show_redir)
-    # check_subdomain("hosts.txt", 3.0, False, True)
 
     write_file = input("Did you want to save the result? [y/N]: ")
     if write_file.lower().strip() == "y":
