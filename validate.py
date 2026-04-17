@@ -1,6 +1,6 @@
 from output import sign, show_output
 from concurrent.futures import ThreadPoolExecutor
-from main import THREAD
+import os
 
 import socket
 from request import http_request, https_request
@@ -43,13 +43,18 @@ def validate_subdomain(sub, time_out, show_available, show_verbose, show_redir):
 
 
     except requests.exceptions.RequestException:
-        return 0
+        return
+    except Exception as e:
+        print(f"Debug: {sub} -> {e}")
 
 
-def check_subdomain(domain, time_out:float, show_available: bool = False, show_verbose: bool = False, show_redir: bool = False):
-    if ".txt" not in domain:
+def check_subdomain(domain: str, time_out:float, thread: int, show_available: bool = False, show_verbose: bool = False, show_redir: bool = False):
+    print("validate as file")
+    if os.path.isfile(domain):
+        with open(domain, "r")as f:
+            raw_data = f.read()
+    elif "." in domain and not domain.endswith(".txt"):
         print(f"Search for subdomain for {domain}")
-
         url = f"https://api.hackertarget.com/hostsearch/?q={domain}"
         response = requests.get(url=url)
 
@@ -61,8 +66,8 @@ def check_subdomain(domain, time_out:float, show_available: bool = False, show_v
             exit(1)
         raw_data = response.text
     else:
-        with open(domain, "r")as f:
-            raw_data = f.read()
+        print("[x] Invalid Domain")
+        exit(0)
 
     lines = raw_data.strip().split("\n")
 
@@ -70,14 +75,10 @@ def check_subdomain(domain, time_out:float, show_available: bool = False, show_v
 
     print(f"[*]Found {len(subdomain)} potential hosts, starting validation\n")
 
-    host_up_count = 0
-
     try:
-        with ThreadPoolExecutor(max_workers=THREAD) as executor:
+        with ThreadPoolExecutor(max_workers=thread) as executor:
             executor.map(lambda s: validate_subdomain(s, time_out, show_available, show_verbose, show_redir), subdomain)
 
     except KeyboardInterrupt:
         print("\n[!]Process stop by user...")
         exit(0)
-
-    print(f"{host_up_count} Host UP (↑)")

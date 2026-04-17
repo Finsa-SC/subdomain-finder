@@ -8,8 +8,8 @@ def sign(http_status, https_status) -> str:
     else:
         return "[-]"
 
-def show_verbose(http_status, https_status, show_redir=False, http_redir=None, https_redir=None) -> str:
-    if show_verbose:
+def show_verbose(http_status, https_status, show_redir=False, http_redir=None, https_redir=None, is_verbose: bool = False) -> str:
+    if is_verbose:
         status = "[ "
         if http_status == 200 and https_status != 200:
             status += "HTTP ONLY, "
@@ -42,12 +42,12 @@ def show_output(sub_info: Mapping[str, Any]):
     ip_address = sub_info["ip_address"]
     show_available = sub_info["show_available"]
 
-    show_verbose = sub_info["show_verbose"]
+    is_verbose = sub_info["show_verbose"]
     show_redir = sub_info["show_redir"]
     http_redir = sub_info["http_redir"]
     https_redir = sub_info["https_redir"]
 
-    status = show_verbose(http_status, https_status, show_redir, http_redir, https_redir)
+    status = show_verbose(http_status, https_status, show_redir, http_redir, https_redir, is_verbose)
 
 
     if server == None:
