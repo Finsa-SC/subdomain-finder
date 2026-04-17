@@ -1,10 +1,4 @@
-import socket
-from request import http_request, https_request
-import requests
-
-
-healthy_ip = set()
-problem_ip = set()
+from typing import Any, Mapping
 
 def sign(http_status, https_status) -> str:
     if http_status == 200 or https_status == 200:
@@ -14,56 +8,59 @@ def sign(http_status, https_status) -> str:
     else:
         return "[-]"
 
+def show_verbose(http_status, https_status, show_redir=False, http_redir=None, https_redir=None) -> str:
+    if show_verbose:
+        status = "[ "
+        if http_status == 200 and https_status != 200:
+            status += "HTTP ONLY, "
+        if https_status == 200 and http_status != 200:
+            status += "HTTPS ONLY, "
+        if https_status == 200 and http_status == 200:
+            status += "HTTP and HTTPS, "
+        if http_status == 403:
+            status += "HTTP FORBIDDEN, "
+        if https_status == 403:
+            status += "HTTPS FORBIDDEN"
+        if show_redir:
+            if "-" != http_redir:
+                status += f"HTTP REDIR: {http_redir}"
+            if "-" != https_redir:
+                status += f"HTTPS REDIR: {https_redir}"
+        status += " ]"
+    else:
+        status = "(OK)" if http_status == 200 or https_status == 200 else "[!Forbidden]" if http_status == 403 or https_status == 403 else ""
+    return status
 
-def validate_subdomain(sub, time_out, show_available, show_verbose, show_redir):
-    try:
-        try:
-            ip_address = socket.gethostbyname(sub)
-        except socket.gaierror:
-            ip_address = "No IP"
+def show_output(sub_info: Mapping[str, Any]):
+    server = sub_info["server"]
+    sub = sub_info["subdomain"]
+    http_status = sub_info["http_status"]
+    https_status = sub_info["https_status"]
+    signing = sub_info["signing"]
+    http_latency = sub_info["http_latency"]
+    https_latency = sub_info["http_latency"]
+    ip_address = sub_info["ip_address"]
+    show_available = sub_info["show_available"]
 
-        http_status, http_server, http_redir, http_latency = http_request(sub, time_out)
-        https_status, https_server, https_redir, https_latency = https_request(sub, time_out)
+    show_verbose = sub_info["show_verbose"]
+    show_redir = sub_info["show_redir"]
+    http_redir = sub_info["http_redir"]
+    https_redir = sub_info["https_redir"]
 
-        signing = sign(http_status, https_status)
+    status = show_verbose(http_status, https_status, show_redir, http_redir, https_redir)
 
-        server = http_server if http_status != None else https_server
 
-        if show_verbose:
-            status = "[ "
-            if http_status == 200 and https_status != 200:
-                status += "HTTP ONLY, "
-            if https_status == 200 and http_status != 200:
-                status += "HTTPS ONLY, "
-            if https_status == 200 and http_status == 200:
-                status += "HTTP and HTTPS, "
-            if http_status == 403:
-                status += "HTTP FORBIDDEN, "
-            if https_status == 403:
-                status += "HTTPS FORBIDDEN"
-            if show_redir:
-                if "-" != http_redir:
-                    status += f"HTTP REDIR: {http_redir}"
-                if "-" != https_redir:
-                    status += f"HTTPS REDIR: {https_redir}"
-            status += " ]"
-        else:
-            status = "(OK)" if http_status == 200 or https_status == 200 else "[!Forbidden]" if http_status == 403 or https_status == 403 else ""
+    if server == None:
+        return
+    elif http_status == 200 or sub_info["https_status"] == 200:
+        print(f"{sub_info['signing']} {sub: <40} | {sub_info['ip_address']: <15} | {sub_info['server']: <15} | "
+              f"HTTP: {str(http_status or '-'): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
+              f"HTTPS: {str(https_status or '-'): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
+        return True, ip_address
 
-        if server == None:
-            return 0
-        elif http_status == 200 or https_status == 200:
-            print(f"{signing} {sub: <40} | {ip_address: <15} | {server: <15} | "
-                  f"HTTP: {str(http_status or '-'): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
-                  f"HTTPS: {str(https_status or '-'): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
-            healthy_ip.add(ip_address)
-            return 1
-        elif not show_available:
-            print(f"{signing} {sub: <40} | {ip_address: <15} | {server: <15} | "
-                  f"HTTP: {str(http_status or '-'): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
-                  f"HTTPS: {str(https_status or '-'): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
-            problem_ip.add(ip_address)
-            return 0
-        return 0
-    except requests.exceptions.RequestException:
-        return 0
+    elif not show_available:
+        print(f"{signing} {sub: <40} | {ip_address: <15} | {server: <15} | "
+              f"HTTP: {str(http_status or '-'): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
+              f"HTTPS: {str(https_status or '-'): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
+        return False, ip_address
+    return
