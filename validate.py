@@ -28,10 +28,11 @@ def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
             if baselines["http"]["status"] == 200 and baselines["http"]["size"] == http_content:
                 is_wildcard = True
         if is_wildcard and config.no_wildcard:
-            return
+            return None, None
 
 
-        signing = sign(http_status, https_status)
+
+        signing = sign(http_status, https_status, is_wildcard)
 
         server = http_server if http_status != None else https_server
 
@@ -48,16 +49,17 @@ def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
             "show_verbose": config.verbose,
             "show_redir": config.redirect,
             "http_redir": http_redir,
-            "https_redir": https_redir,
+            "https_redir": https_redir
         }
 
         show_output(sub_info)
         return 200 in [http_status, https_status], ip_address
 
     except requests.exceptions.RequestException:
-        return None, None
+        return False, "No IP"
     except Exception as e:
         print(f"Error: {sub} -> {e}")
+        return False, "No IP"
 
 
 def check_subdomain(domain: str, config: ScanConfig):
@@ -126,7 +128,7 @@ def check_wildcard(domain: str):
         res = requests.get(f"http://{wild_sub}", timeout=5, allow_redirects=False)
         wild_status = res.status_code
         wild_size = len(res.content)
-        baselines["https"] = {"status": wild_status, "size": wild_size}
+        baselines["http"] = {"status": wild_status, "size": wild_size}
     except:
         ...
     try:
@@ -136,5 +138,4 @@ def check_wildcard(domain: str):
         baselines["https"] = {"status": wild_status, "size": wild_size}
     except:
         ...
-    print("Debug: Success Getting Wildcard") #==============================================================================================================================================
     return baselines

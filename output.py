@@ -1,7 +1,9 @@
 from typing import Any, Mapping
 
-def sign(http_status, https_status) -> str:
-    if http_status == 200 or https_status == 200:
+def sign(http_status, https_status, is_wildcard) -> str:
+    if is_wildcard:
+        return "[?]"
+    elif http_status == 200 or https_status == 200:
         return "[*]"
     elif http_status == 403 or https_status == 403:
         return "[!]"
@@ -20,11 +22,11 @@ def show_verbose(http_status, https_status, show_redir=False, http_redir=None, h
         if http_status == 403:
             status += "HTTP FORBIDDEN, "
         if https_status == 403:
-            status += "HTTPS FORBIDDEN"
+            status += "HTTPS FORBIDDEN, "
         if show_redir:
-            if "-" != http_redir:
-                status += f"HTTP REDIR: {http_redir}"
-            if "-" != https_redir:
+            if http_redir and http_redir not in ["-", "None"]:
+                status += f"HTTP REDIR: {http_redir}, "
+            if https_redir and https_redir not in ["-", "None"]:
                 status += f"HTTPS REDIR: {https_redir}"
         status += " ]"
     else:
