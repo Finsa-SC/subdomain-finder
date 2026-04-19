@@ -1,4 +1,8 @@
+from concurrent.futures import thread
+
 from validate import check_subdomain
+from save_file import save_file_healthy, save_file_problem
+from scan_config import ScanConfig
 
 from dotenv import load_dotenv
 import os
@@ -80,34 +84,38 @@ def main():
     )
 
     parser.add_argument(
+        "-nW",
+        "--no-wildcard",
+        action="store_true",
+        help="Skip subdomain if wildcard dns detected in that's subdomain"
+    )
+
+    parser.add_argument(
         "-o",
         "--output",
+        action="store_true",
         help="Save recon result"
     )
 
     args = parser.parse_args()
 
+    config = ScanConfig(
+        timeout=args.timeout,
+        thread=args.thread,
+        available=args.available,
+        verbose=args.verbose,
+        redirect=args.redirect,
+        no_wildcard=args.no_wildcard,
+        save_file=args.output
+    )
+
     if args.redirect and not args.verbose:
         parser.error("redirect need verbose to show")
 
     if args.domain:
-        check_subdomain(
-            args.domain,
-            args.timeout,
-            args.thread,
-            args.available,
-            args.verbose,
-            args.redirect
-        )
+        check_subdomain(args.domain, config)
     elif args.domain_list:
-        check_subdomain(
-            args.domain_list,
-            args.timeout,
-            args.thread,
-            args.available,
-            args.verbose,
-            args.redirect
-        )
+        check_subdomain(args.domain_list, config)
 
 if __name__ == "__main__":
    main()

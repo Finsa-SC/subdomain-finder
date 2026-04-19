@@ -11,9 +11,10 @@ def http_request(sub, time_out):
         server = res.headers.get('Server', 'Unknown')
         location = res.headers.get("Location", "-")
         latency = int(res.elapsed.total_seconds() * 1000)
-        return status_code, server, location, latency
+        length = res.content
+        return status_code, server, location, latency, length
     except requests.exceptions.RequestException:
-        return None, None, None, None
+        return None, None, None, None, None
 
 def https_request(sub, time_out):
     try:
@@ -23,7 +24,8 @@ def https_request(sub, time_out):
         server = res.headers.get('Server', 'Unknown')
         location = res.headers.get("Location", "-")
         latency = int(res.elapsed.total_seconds() * 1000)
-        return status_code, server, location, latency
+        length = res.content
+        return status_code, server, location, latency, length
 
     except requests.exceptions.RequestException:
-        return None, None, None, None
+        return None, None, None, None, None
