@@ -102,3 +102,4 @@ id_rsa.pub
 recon_result
 *.txt
 !banner.txt
+test.py

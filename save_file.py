@@ -21,13 +21,20 @@ def is_cloudflare(ip):
     return False
 
 def save_file_healthy(domain: str, ip_sets: set[str]):
-    with open(f"recon_result/{domain}_healthy_ip.txt", "w") as file:
+    file_name = f"recon_result/{domain}_healthy_ip.txt"
+    with open(file_name, "w") as file:
         for ip in ip_sets:
             if not is_cloudflare(ip):
                 file.write(f"{ip}\n")
+    print(f"Success save healthy ip as {file_name}")
 
 def save_file_problem(domain: str, ip_sets: set[str]):
-    with open(f"recon_result/{domain}_problem_ip.txt", "w") as file:
+    file_name = f"recon_result/{domain}_problem_ip.txt"
+    with open(file_name, "w") as file:
         for ip in ip_sets:
             if not is_cloudflare(ip):
                 file.write(f"{ip}\n")
+    print(f"Success save problem ip as {file_name}")
+
+if __name__ == "__main__":
+    check_result_dir()
