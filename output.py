@@ -1,4 +1,3 @@
-from Tools.scripts.mkreal import join
 from typing import Any, Mapping
 
 def sign(http_status, https_status, is_wildcard) -> str:
