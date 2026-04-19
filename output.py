@@ -12,8 +12,8 @@ def sign(http_status, https_status, is_wildcard) -> str:
         return "[-]"
 
 def show_verbose(http_status, https_status, show_redir=False, http_redir=None, https_redir=None, is_verbose: bool = False) -> str:
+    status = []
     if is_verbose:
-        status = []
         if http_status == 200 and https_status != 200:
             status.append("HTTP ONLY")
         if https_status == 200 and http_status != 200:
@@ -31,7 +31,7 @@ def show_verbose(http_status, https_status, show_redir=False, http_redir=None, h
                 status.append(f"HTTPS REDIR: {https_redir}")
 
     else:
-        status = "(OK)" if http_status == 200 or https_status == 200 else "[!Forbidden]" if http_status == 403 or https_status == 403 else ""
+        status.append("(OK)" if http_status == 200 or https_status == 200 else "[!Forbidden]" if http_status == 403 or https_status == 403 else "")
     if status:
         return f"[ {', '.join(status)} "
     return ""

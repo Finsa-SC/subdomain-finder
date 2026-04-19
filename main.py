@@ -94,7 +94,14 @@ def main():
         "-o",
         "--output",
         action="store_true",
-        help="Save recon result"
+        help="Save recon result as plain list ip"
+    )
+
+    parser.add_argument(
+        "-oJ",
+        "--output-json",
+        action="store_true",
+        help="Save recon result as json with detail information"
     )
 
     args = parser.parse_args()
@@ -106,7 +113,8 @@ def main():
         verbose=args.verbose,
         redirect=args.redirect,
         no_wildcard=args.no_wildcard,
-        save_file=args.output
+        save_file_plain=args.output,
+        save_file_json=args.output_json
     )
 
     if args.redirect and not args.verbose:

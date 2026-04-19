@@ -1,5 +1,6 @@
 import ipaddress
 import os
+import json
 
 CLOUDFLARE_IPS = [
     "173.245.48.0/20", "103.21.244.0/22", "103.22.200.0/22",
@@ -36,5 +37,8 @@ def save_file_problem(domain: str, ip_sets: set[str]):
                 file.write(f"{ip}\n")
     print(f"Success save problem ip as {file_name}")
 
-if __name__ == "__main__":
-    check_result_dir()
+def save_file_as_json(domain: str ,dict_sub):
+    file_name = f"recon_result/{domain}.json"
+    with open(file_name, "w")as file:
+        json.dump(dict_sub, file, indent=4)
+    print(f"Success save JSON result as {file_name}")

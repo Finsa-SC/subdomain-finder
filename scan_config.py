@@ -8,4 +8,5 @@ class ScanConfig:
     verbose: bool
     redirect: bool
     no_wildcard: bool
-    save_file: bool
+    save_file_plain: bool
+    save_file_json: bool

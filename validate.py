@@ -1,15 +1,17 @@
 from output import sign, show_output
+from request import http_request, https_request
+from save_file import save_file_healthy, save_file_problem, check_result_dir, save_file_as_json
+from scan_config import ScanConfig
+from summary import ReconStats
+
 from concurrent.futures import ThreadPoolExecutor
 import os
 import tldextract
-
 import socket
-from request import http_request, https_request
 import requests
 
-from save_file import save_file_healthy, save_file_problem, check_result_dir
-from scan_config import ScanConfig
 
+stats = ReconStats()
 
 def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
     try:
@@ -18,8 +20,26 @@ def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
         except socket.gaierror:
             ip_address = "No IP"
 
-        http_status, http_server, http_redir, http_latency, http_content = http_request(sub, config.timeout)
-        https_status, https_server, https_redir, https_latency, https_content = https_request(sub, config.timeout)
+        dict_http = http_request(sub, config.timeout)
+        dict_https = https_request(sub, config.timeout)
+
+        h = dict_http if dict_http else {}
+        s = dict_https if dict_https else {}
+
+        timestamp = h.get("timestamp") or s.get("timestamp")
+
+        http_status = h.get("http_status")
+        http_server = h.get("http_server", "Unknown")
+        http_latency = h.get("http_latency")
+        http_content = h.get("length", b"")
+        http_redir = h.get("location", "-")
+
+        https_status = s.get("https_status")
+        https_server = s.get("https_server", "Unknown")
+        https_latency = s.get("https_latency")
+        https_content = s.get("length", b"")
+        https_redir = s.get("location", "-")
+
 
         ##Validate Wildcard
         baselines = wildcard_baseline
@@ -51,15 +71,39 @@ def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
             "http_redir": http_redir,
             "https_redir": https_redir
         }
+        dict_info = {
+            "timestamp": timestamp,
+            "subdomain": sub,
+            "ip_address": ip_address,
+            "status": {
+                "http": http_status,
+                "https": https_status
+            },
+            "server": server,
+            "latency": {
+                "http": http_latency,
+                "https": https_latency
+            },
+            "redirect": {
+                "http": http_redir,
+                "https": https_redir
+            },
+            "size": {
+                "http": len(http_content) if http_content else 0,
+                "https": len(https_content) if https_content else 0
+            },
+            "posible_wildcard": is_wildcard
+        }
 
         show_output(sub_info)
-        return 200 in [http_status, https_status], ip_address
+        stats.log(http_status, https_status)
+        return 200 in [http_status, https_status], ip_address, dict_info
 
     except requests.exceptions.RequestException:
-        return False, "No IP"
+        return False, "No IP", None
     except Exception as e:
         print(f"Error: {sub} -> {e}")
-        return False, "No IP"
+        return False, "No IP", None
 
 
 def check_subdomain(domain: str, config: ScanConfig):
@@ -98,19 +142,28 @@ def check_subdomain(domain: str, config: ScanConfig):
         with ThreadPoolExecutor(max_workers=config.thread) as executor:
             futures = [executor.submit(validate_subdomain, s, config, wildcard_baseline) for s in subdomain]
 
+        sub_list = []
         for future in futures:
-            is_ok, ip = future.result()
+            is_ok, ip, dict_sub = future.result()
             if ip != "No IP":
                 if is_ok:
                     healthy_ip.add(ip)
                 else:
                     problem_ip.add(ip)
+            if dict_sub:
+                sub_list.append(dict_sub)
 
-        if config.save_file:
+        if config.save_file_plain:
             root = get_domain_root(subdomain[0])
             check_result_dir()
             save_file_healthy(root, healthy_ip)
             save_file_problem(root, problem_ip)
+        if config.save_file_json:
+            check_result_dir()
+            root = get_domain_root(subdomain[0])
+            save_file_as_json(root, sub_list)
+
+        stats.summary()
 
     except KeyboardInterrupt:
         print("\n[!]Process stop by user...")
