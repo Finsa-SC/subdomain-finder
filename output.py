@@ -1,3 +1,4 @@
+from Tools.scripts.mkreal import join
 from typing import Any, Mapping
 
 def sign(http_status, https_status, is_wildcard) -> str:
@@ -12,26 +13,28 @@ def sign(http_status, https_status, is_wildcard) -> str:
 
 def show_verbose(http_status, https_status, show_redir=False, http_redir=None, https_redir=None, is_verbose: bool = False) -> str:
     if is_verbose:
-        status = "[ "
+        status = []
         if http_status == 200 and https_status != 200:
-            status += "HTTP ONLY, "
+            status.append("HTTP ONLY")
         if https_status == 200 and http_status != 200:
-            status += "HTTPS ONLY, "
+            status.append("HTTPS ONLY")
         if https_status == 200 and http_status == 200:
-            status += "HTTP and HTTPS, "
+            status.append("HTTP and HTTPS")
         if http_status == 403:
-            status += "HTTP FORBIDDEN, "
+            status.append("HTTP FORBIDDEN")
         if https_status == 403:
-            status += "HTTPS FORBIDDEN, "
+            status.append("HTTPS FORBIDDEN")
         if show_redir:
             if http_redir and http_redir not in ["-", "None"]:
-                status += f"HTTP REDIR: {http_redir}, "
+                status.append(f"HTTP REDIR: {http_redir}")
             if https_redir and https_redir not in ["-", "None"]:
-                status += f"HTTPS REDIR: {https_redir}"
-        status += " ]"
+                status.append(f"HTTPS REDIR: {https_redir}")
+
     else:
         status = "(OK)" if http_status == 200 or https_status == 200 else "[!Forbidden]" if http_status == 403 or https_status == 403 else ""
-    return status
+    if status:
+        return f"[ {', '.join(status)} "
+    return ""
 
 def show_output(sub_info: Mapping[str, Any]):
     server = sub_info["server"]
