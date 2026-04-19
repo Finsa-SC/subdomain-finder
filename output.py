@@ -43,7 +43,7 @@ def show_output(sub_info: Mapping[str, Any]):
     https_status = sub_info["https_status"]
     signing = sub_info["signing"]
     http_latency = sub_info["http_latency"]
-    https_latency = sub_info["http_latency"]
+    https_latency = sub_info["https_latency"]
     ip_address = sub_info["ip_address"]
     show_available = sub_info["show_available"]
 

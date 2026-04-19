@@ -48,7 +48,7 @@ def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
             if baselines["http"]["status"] == 200 and baselines["http"]["size"] == http_content:
                 is_wildcard = True
         if is_wildcard and config.no_wildcard:
-            return None, None
+            return None, None, None
 
 
 
