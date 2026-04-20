@@ -1,5 +1,5 @@
-from Tools.scripts.mkreal import join
 from typing import Any, Mapping
+from save_file import is_cloudflare
 
 def sign(http_status, https_status, is_wildcard) -> str:
     if is_wildcard:
@@ -68,4 +68,15 @@ def show_output(sub_info: Mapping[str, Any]):
               f"HTTP: {str(http_status or '-'): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
               f"HTTPS: {str(https_status or '-'): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
         return False, ip_address
-    return
+    return False, "No IP"
+
+print_ip = []
+def show_quiet(is_okay: int, sub: str = None, ip: str= None, show_ip: bool = False):
+    if is_okay:
+        if show_ip:
+            is_reverse = is_cloudflare(ip)
+            if ip not in print_ip and not is_reverse:
+                print(ip)
+                print_ip.append(ip)
+        else:
+            print(sub)

@@ -91,6 +91,19 @@ def main():
     )
 
     parser.add_argument(
+        "-q",
+        "--quiet",
+        action="store_true",
+        help="Show clean output in terminal only subdoamin with http/https 200 status code"
+    )
+
+    parser.add_argument(
+        "--ip",
+        action="store_true",
+        help="Show ip address instead subdomain clearly"
+    )
+
+    parser.add_argument(
         "-o",
         "--output",
         action="store_true",
@@ -113,12 +126,16 @@ def main():
         verbose=args.verbose,
         redirect=args.redirect,
         no_wildcard=args.no_wildcard,
+        quiet=args.quiet,
+        quiet_ip=args.ip,
         save_file_plain=args.output,
         save_file_json=args.output_json
     )
 
     if args.redirect and not args.verbose:
         parser.error("redirect need verbose to show")
+    if args.ip and not args.quiet:
+        parser.error("Ip need quiet to show")
 
     if args.domain:
         check_subdomain(args.domain, config)

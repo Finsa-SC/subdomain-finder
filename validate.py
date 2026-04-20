@@ -1,4 +1,4 @@
-from output import sign, show_output
+from output import sign, show_output, show_quiet
 from request import http_request, https_request
 from save_file import save_file_healthy, save_file_problem, check_result_dir, save_file_as_json
 from scan_config import ScanConfig
@@ -95,9 +95,13 @@ def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
             "posible_wildcard": is_wildcard
         }
 
-        show_output(sub_info)
+        status_ok = 200 in [http_status, https_status]
+        if config.quiet:
+            show_quiet(is_okay=status_ok, sub=sub, ip=ip_address, show_ip=config.quiet_ip)
+        else:
+            show_output(sub_info)
         stats.log(http_status, https_status)
-        return 200 in [http_status, https_status], ip_address, dict_info
+        return status_ok, ip_address, dict_info
 
     except requests.exceptions.RequestException:
         return False, "No IP", None

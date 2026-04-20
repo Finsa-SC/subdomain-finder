@@ -8,5 +8,7 @@ class ScanConfig:
     verbose: bool
     redirect: bool
     no_wildcard: bool
+    quiet: bool
+    quiet_ip: bool
     save_file_plain: bool
     save_file_json: bool
