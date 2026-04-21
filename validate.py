@@ -33,26 +33,31 @@ def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
         http_latency = h.get("http_latency")
         http_content = h.get("length", b"")
         http_redir = h.get("location", "-")
+        http_title = h.get("http_title", "")
 
         https_status = s.get("https_status")
         https_server = s.get("https_server", "Unknown")
         https_latency = s.get("https_latency")
         https_content = s.get("length", b"")
         https_redir = s.get("location", "-")
+        https_title = s.get("https_title", "")
 
 
         ##Validate Wildcard
         baselines = wildcard_baseline
-        is_wildcard = False
+        http_wildcard = False
+        https_wildcard = False
         if baselines["http"]:
-            if baselines["http"]["status"] == 200 and baselines["http"]["size"] == http_content:
-                is_wildcard = True
-        if is_wildcard and config.no_wildcard:
+            if baselines["http"]["status"] == 200 and baselines["http"]["size"] == len(http_content) if isinstance(http_content, bytes) else http_content:
+                http_wildcard = True
+        if baselines["https"]:
+            if baselines["https"]["status"] == 200 and baselines["https"]["size"] == len(https_content) if isinstance(https_content, bytes) else https_content:
+                https_wildcard = True
+        if http_wildcard or https_wildcard and config.no_wildcard:
             return None, None, None
 
-
-
-        signing = sign(http_status, https_status, is_wildcard)
+        is_any_wildcard = http_wildcard or https_wildcard
+        signing = sign(http_status, https_status, is_any_wildcard)
 
         server = http_server if http_status != None else https_server
 
@@ -69,7 +74,10 @@ def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
             "show_verbose": config.verbose,
             "show_redir": config.redirect,
             "http_redir": http_redir,
-            "https_redir": https_redir
+            "https_redir": https_redir,
+            "http_title": http_title,
+            "https_title": https_title,
+            "show_title": config.show_title
         }
         dict_info = {
             "timestamp": timestamp,
@@ -89,10 +97,10 @@ def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
                 "https": https_redir
             },
             "size": {
-                "http": len(http_content) if http_content else 0,
-                "https": len(https_content) if https_content else 0
+                "http": http_content if http_content else 0,
+                "https": https_content if https_content else 0
             },
-            "posible_wildcard": is_wildcard
+            "posible_wildcard": is_any_wildcard
         }
 
         status_ok = 200 in [http_status, https_status]
@@ -141,7 +149,7 @@ def check_subdomain(domain: str, config: ScanConfig):
     print(f"[*]Found {len(subdomain)} potential hosts, starting validation\n")
 
     wildcard_baseline = check_wildcard(get_domain_root(subdomain[0]))
-
+    print(f"[*] Debug Baseline: {wildcard_baseline}")
     try:
         with ThreadPoolExecutor(max_workers=config.thread) as executor:
             futures = [executor.submit(validate_subdomain, s, config, wildcard_baseline) for s in subdomain]
