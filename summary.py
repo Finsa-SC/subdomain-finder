@@ -1,17 +1,21 @@
 class ReconStats:
     def __init__(self):
-        super().__setattr__('allowed', ['ok', 'forbidden', 'ssl_error', 'server_error'])
+        super().__setattr__('allowed', ['ok', 'forbidden', 'ssl_error', 'server_error', 'dead'])
         for name in self.allowed:
             super().__setattr__(f"_{name}", 0)
 
     def log(self, http_status, https_status):
-        if 200 in (http_status, https_status):
+        code = [http_status, https_status]
+
+        if any(isinstance(c, int) and c == 200 for c in code):
             self.ok += 1
-        elif 403 in (http_status, https_status):
+        elif any(isinstance(c, int) and c == 302 for c in code):
             self.forbidden += 1
-        elif None in (http_status, https_status):
+        elif "SSL_ERR" in code:
             self.ssl_error += 1
-        elif any(code in (500, 501, 502) for code in (http_status, https_status)):
+        elif "CONN_ERR" in code:
+            self.dead += 1
+        elif any(isinstance(c, int) and 500 <= c <= 504 for c in code):
             self.server_error += 1
 
     def summary(self):
@@ -20,6 +24,7 @@ class ReconStats:
         print(f"Forbidden    : {self.forbidden}")
         print(f"SSL Error    : {self.ssl_error}")
         print(f"Server Error : {self.server_error}")
+        print(f"No Response  : {self.dead}")
 
     def __setattr__(self, name, value):
         if name in getattr(self, 'allowed', []):

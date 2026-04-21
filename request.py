@@ -18,8 +18,10 @@ def http_request(sub, time_out):
             "timestamp": res.headers.get('Date')
         }
         return http_dict
+    except requests.exceptions.SSLError:
+        return {"http_status": "SSL_ERR"}
     except requests.exceptions.RequestException:
-        return None
+        return {"http_status": "CONN_ERR"}
 
 def https_request(sub, time_out):
     try:
@@ -35,9 +37,10 @@ def https_request(sub, time_out):
             "timestamp": res.headers.get('Date')
         }
         return https_dict
-
+    except requests.exceptions.SSLError:
+        return {"http_status": "SSL_ERR"}
     except requests.exceptions.RequestException:
-        return None
+        return {"http_status": "CONN_ERR"}
 
 def get_html_title(html_content):
     try:

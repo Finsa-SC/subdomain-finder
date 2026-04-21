@@ -1,4 +1,6 @@
 from typing import Any, Mapping
+
+from request import http_request
 from save_file import is_cloudflare
 
 def sign(http_status, https_status, is_wildcard) -> str:
@@ -58,18 +60,21 @@ def show_output(sub_info: Mapping[str, Any]):
     status = show_verbose(http_status, https_status, show_redir, http_redir, https_redir, is_verbose)
 
 
+    h_out = http_status if isinstance(http_status, int) else "-"
+    s_out = https_status if isinstance(https_status, int) else "-"
+
     if server == None:
         return
     elif http_status == 200 or sub_info["https_status"] == 200:
         print(f"{sub_info['signing']} {sub: <40} | {sub_info['ip_address']: <15} | {sub_info['server']: <15} | "
-              f"HTTP: {str(http_status or '-'): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
-              f"HTTPS: {str(https_status or '-'): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
+              f"HTTP: {str(h_out): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
+              f"HTTPS: {str(h_out): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
         print_title(http_title, https_title)
         return True, ip_address
     elif not show_available:
         print(f"{signing} {sub: <40} | {ip_address: <15} | {server: <15} | "
-              f"HTTP: {str(http_status or '-'): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
-              f"HTTPS: {str(https_status or '-'): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
+              f"HTTP: {str(s_out): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
+              f"HTTPS: {str(s_out): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
 
         if show_title: print_title(http_title, https_title)
         return False, ip_address
