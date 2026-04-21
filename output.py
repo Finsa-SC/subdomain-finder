@@ -41,6 +41,8 @@ def show_output(sub_info: Mapping[str, Any]):
     sub = sub_info["subdomain"]
     http_status = sub_info["http_status"]
     https_status = sub_info["https_status"]
+    http_title = sub_info["http_title"]
+    https_title = sub_info["https_title"]
     signing = sub_info["signing"]
     http_latency = sub_info["http_latency"]
     https_latency = sub_info["https_latency"]
@@ -51,6 +53,7 @@ def show_output(sub_info: Mapping[str, Any]):
     show_redir = sub_info["show_redir"]
     http_redir = sub_info["http_redir"]
     https_redir = sub_info["https_redir"]
+    show_title = sub_info["show_title"]
 
     status = show_verbose(http_status, https_status, show_redir, http_redir, https_redir, is_verbose)
 
@@ -61,14 +64,17 @@ def show_output(sub_info: Mapping[str, Any]):
         print(f"{sub_info['signing']} {sub: <40} | {sub_info['ip_address']: <15} | {sub_info['server']: <15} | "
               f"HTTP: {str(http_status or '-'): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
               f"HTTPS: {str(https_status or '-'): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
+        print_title(http_title, https_title)
         return True, ip_address
-
     elif not show_available:
         print(f"{signing} {sub: <40} | {ip_address: <15} | {server: <15} | "
               f"HTTP: {str(http_status or '-'): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
               f"HTTPS: {str(https_status or '-'): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
+
+        if show_title: print_title(http_title, https_title)
         return False, ip_address
     return False, "No IP"
+
 
 print_ip = []
 def show_quiet(is_okay: int, sub: str = None, ip: str= None, show_ip: bool = False):
@@ -80,3 +86,24 @@ def show_quiet(is_okay: int, sub: str = None, ip: str= None, show_ip: bool = Fal
                 print_ip.append(ip)
         else:
             print(sub)
+
+def print_title(http_title: str, https_title: str):
+    ignore_list = ["301 moved permanently", "302 found", "object moved", "welcome to nginx!", "welcome to openresty"]
+
+    def is_valid(title: str):
+        if not title and title.strip() in ["-", ""]:
+            return False
+        if title.lower() in ignore_list or title.lower() in ignore_list:
+            return False
+        return True
+
+    h = http_title if is_valid(http_title) else None
+    s = https_title if is_valid(https_title) else None
+
+    if h == s and h:
+        print(f"title: [{h}]")
+    else:
+        if h:
+            print(f"    |_http title: [{h}]")
+        if s:
+            print(f"    |_https title: {s}")

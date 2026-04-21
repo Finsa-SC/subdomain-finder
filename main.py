@@ -104,6 +104,13 @@ def main():
     )
 
     parser.add_argument(
+        "-T",
+        "--title",
+        action="store_true",
+        help="Print title of page below subdomain"
+    )
+
+    parser.add_argument(
         "-o",
         "--output",
         action="store_true",
@@ -128,6 +135,7 @@ def main():
         no_wildcard=args.no_wildcard,
         quiet=args.quiet,
         quiet_ip=args.ip,
+        show_title=args.title,
         save_file_plain=args.output,
         save_file_json=args.output_json
     )
