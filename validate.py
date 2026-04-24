@@ -34,6 +34,7 @@ def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
         http_content = h.get("length", b"")
         http_redir = h.get("location", "-")
         http_title = h.get("http_title", "")
+        http_header = h.get("header", "")
 
         https_status = s.get("https_status")
         https_server = s.get("https_server", "Unknown")
@@ -41,6 +42,7 @@ def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
         https_content = s.get("length", b"")
         https_redir = s.get("location", "-")
         https_title = s.get("https_title", "")
+        https_header = h.get("header", "")
 
 
         ##Validate Wildcard
@@ -77,7 +79,10 @@ def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
             "https_redir": https_redir,
             "http_title": http_title,
             "https_title": https_title,
-            "show_title": config.show_title
+            "show_title": config.show_title,
+            "http_tech": http_header,
+            "https_tech": https_header,
+            "show_tech": config.show_tech
         }
         dict_info = {
             "timestamp": timestamp,
@@ -149,7 +154,6 @@ def check_subdomain(domain: str, config: ScanConfig):
     print(f"[*]Found {len(subdomain)} potential hosts, starting validation\n")
 
     wildcard_baseline = check_wildcard(get_domain_root(subdomain[0]))
-    print(f"[*] Debug Baseline: {wildcard_baseline}")
     try:
         with ThreadPoolExecutor(max_workers=config.thread) as executor:
             futures = [executor.submit(validate_subdomain, s, config, wildcard_baseline) for s in subdomain]

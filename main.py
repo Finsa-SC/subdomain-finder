@@ -111,6 +111,13 @@ def main():
     )
 
     parser.add_argument(
+        "-x",
+        "--header-tech",
+        action="store_true",
+        help="Show subdomain tech from header"
+    )
+
+    parser.add_argument(
         "-o",
         "--output",
         action="store_true",
@@ -136,6 +143,7 @@ def main():
         quiet=args.quiet,
         quiet_ip=args.ip,
         show_title=args.title,
+        show_tech=args.header_tech,
         save_file_plain=args.output,
         save_file_json=args.output_json
     )

@@ -16,7 +16,8 @@ def http_request(sub, time_out):
             "location": res.headers.get("Location", "-"),
             "http_latency": int(res.elapsed.total_seconds() * 1000),
             "length": len(res.content),
-            "timestamp": res.headers.get('Date')
+            "timestamp": res.headers.get('Date'),
+            "header": res.headers
         }
         return http_dict
     except requests.exceptions.SSLError:
