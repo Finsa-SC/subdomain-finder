@@ -1,4 +1,4 @@
-from sources import hackertarget, crtsh
+from sources import hackertarget, crtsh, alienvault
 
 
 def get_subdomain(domain: str, use_all: bool = False, selected_source: str = None):
@@ -6,7 +6,8 @@ def get_subdomain(domain: str, use_all: bool = False, selected_source: str = Non
 
     source_map = {
         "hackertarget": hackertarget.fetch_hackertarget,
-        "crtsh": crtsh.fetch_crtsh
+        "crtsh": crtsh.fetch_crtsh,
+        "alienvault": alienvault.fetch_alienvault
     }
 
     to_run = source_map.keys() if use_all else (selected_source or ["hackertarget"])
