@@ -14,6 +14,7 @@ load_dotenv()
 TIMEOUT = float(os.getenv("TIMEOUT", 3.0))
 THREAD = int(os.getenv("THREAD", 10))
 DEBUG = os.getenv("DEBUG", "false").lower().strip() == "true"
+DELAY = os.getenv("DELAY", 0.0)
 
 VERSION = "1.0.0"
 
@@ -59,6 +60,13 @@ def main():
         type=int,
         default=THREAD,
         help="Number of threads (default is 10)"
+    )
+
+    parser.add_argument(
+        "--delay",
+        type=float,
+        default=DELAY,
+        help="Delay of request"
     )
 
 ##Inputless
@@ -137,7 +145,8 @@ def main():
         quiet_ip=args.ip,
         show_title=args.title,
         save_file_plain=args.output,
-        save_file_json=args.output_json
+        save_file_json=args.output_json,
+        delay=args.delay
     )
 
     if args.redirect and not args.verbose:

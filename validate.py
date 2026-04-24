@@ -4,6 +4,7 @@ from save_file import save_file_healthy, save_file_problem, check_result_dir, sa
 from scan_config import ScanConfig
 from summary import ReconStats
 
+from time import sleep
 from concurrent.futures import ThreadPoolExecutor
 import os
 import tldextract
@@ -152,7 +153,12 @@ def check_subdomain(domain: str, config: ScanConfig):
     print(f"[*] Debug Baseline: {wildcard_baseline}")
     try:
         with ThreadPoolExecutor(max_workers=config.thread) as executor:
-            futures = [executor.submit(validate_subdomain, s, config, wildcard_baseline) for s in subdomain]
+            futures = []
+            for s in subdomain:
+                futures.append(executor.submit(validate_subdomain, s, config, wildcard_baseline))
+
+                if config.delay > 0:
+                    sleep(config.delay)
 
         sub_list = []
         for future in futures:

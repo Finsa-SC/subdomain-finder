@@ -13,3 +13,4 @@ class ScanConfig:
     show_title: bool
     save_file_plain: bool
     save_file_json: bool
+    delay: float
