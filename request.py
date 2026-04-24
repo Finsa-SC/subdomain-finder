@@ -1,3 +1,4 @@
+import html
 import requests
 import urllib3
 import re
@@ -9,7 +10,7 @@ def http_request(sub, time_out):
         sub_url = f"http://{sub}"
         res = requests.get(url=sub_url, timeout=time_out, allow_redirects=False, verify=False)
         http_dict = {
-            "http_title": get_html_title(res.text),
+            "http_title": get_html_title(res),
             "http_status": res.status_code,
             "http_server": res.headers.get('Server', 'Unknown'),
             "location": res.headers.get("Location", "-"),
@@ -28,7 +29,7 @@ def https_request(sub, time_out):
         sub_url = f"https://{sub}"
         res = requests.get(url=sub_url, timeout=time_out, allow_redirects=False, verify=False)
         https_dict = {
-            "https_title": get_html_title(res.text),
+            "https_title": get_html_title(res),
             "https_status": res.status_code,
             "https_server": res.headers.get('Server', 'Unknown'),
             "location": res.headers.get("Location", "-"),
@@ -42,9 +43,13 @@ def https_request(sub, time_out):
     except requests.exceptions.RequestException:
         return {"http_status": "CONN_ERR"}
 
-def get_html_title(html_content):
+def get_html_title(res):
+    res.encoding = res.apparent_encoding
     try:
-        title = re.search(r'<title>(.*?)</title>', html_content, re.IGNORECASE)
-        return title.group(1).strip() if title else "-"
+        title_search = re.search(r'<title>(.*?)</title>', res.text, re.IGNORECASE | re.DOTALL)
+        if title_search:
+            title = html.unescape(title_search.group(1).strip())
+            return title.replace('\n', ' ').replace('\r', '')
+        return "-"
     except:
         return "-"

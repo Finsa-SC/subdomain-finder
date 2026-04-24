@@ -1,6 +1,5 @@
 from typing import Any, Mapping
 
-from request import http_request
 from save_file import is_cloudflare
 
 def sign(http_status, https_status, is_wildcard) -> str:
@@ -106,9 +105,9 @@ def print_title(http_title: str, https_title: str):
     s = https_title if is_valid(https_title) else None
 
     if h == s and h:
-        print(f"title: [{h}]")
+        print(f"        |_title: [{h}]")
     else:
         if h:
-            print(f"    |_http title: [{h}]")
+            print(f"        |_http title: [{h}]")
         if s:
-            print(f"    |_https title: {s}")
+            print(f"        |_https title: {s}")

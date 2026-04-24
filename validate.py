@@ -1,5 +1,5 @@
 from output import sign, show_output, show_quiet
-from request import http_request, https_request
+from request import http_request, https_request, get_html_title
 from save_file import save_file_healthy, save_file_problem, check_result_dir, save_file_as_json
 from scan_config import ScanConfig
 from summary import ReconStats
@@ -48,12 +48,12 @@ def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
         http_wildcard = False
         https_wildcard = False
         if baselines["http"]:
-            if baselines["http"]["status"] == 200 and baselines["http"]["size"] == len(http_content) if isinstance(http_content, bytes) else http_content:
+            if baselines["http"]["status"] == 200 and baselines["http"]["size"] == len(http_content) if isinstance(http_content, bytes) else http_content and baselines["http"]["title"] == http_title:
                 http_wildcard = True
         if baselines["https"]:
-            if baselines["https"]["status"] == 200 and baselines["https"]["size"] == len(https_content) if isinstance(https_content, bytes) else https_content:
+            if baselines["https"]["status"] == 200 and baselines["https"]["size"] == len(https_content) if isinstance(https_content, bytes) else https_content and baselines["https"]["title"] == https_title:
                 https_wildcard = True
-        if http_wildcard or https_wildcard and config.no_wildcard:
+        if (http_wildcard or https_wildcard) and config.no_wildcard:
             return None, None, None
 
         is_any_wildcard = http_wildcard or https_wildcard
@@ -193,14 +193,17 @@ def check_wildcard(domain: str):
         res = requests.get(f"http://{wild_sub}", timeout=5, allow_redirects=False)
         wild_status = res.status_code
         wild_size = len(res.content)
-        baselines["http"] = {"status": wild_status, "size": wild_size}
-    except:
-        ...
+        wild_title = get_html_title(res)
+        baselines["http"] = {"title": wild_title, "status": wild_status, "size": wild_size}
+    except Exception as e:
+        print(f"[x] HTTP Wildcard check failed: {e}")
+
     try:
         res = requests.get(f"https://{wild_sub}", allow_redirects=False, timeout=5, verify=False)
         wild_status = res.status_code
         wild_size = len(res.content)
-        baselines["https"] = {"status": wild_status, "size": wild_size}
-    except:
-        ...
+        wild_title = get_html_title(res)
+        baselines["https"] = {"title": wild_title, "status": wild_status, "size": wild_size}
+    except Exception as e:
+        print(f"[x] HTTPS Wildcard check failed: {e}")
     return baselines
