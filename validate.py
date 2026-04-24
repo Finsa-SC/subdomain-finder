@@ -3,6 +3,7 @@ from request import http_request, https_request, get_html_title
 from save_file import save_file_healthy, save_file_problem, check_result_dir, save_file_as_json
 from scan_config import ScanConfig
 from summary import ReconStats
+from sources.handler import get_subdomain
 
 from time import sleep
 from concurrent.futures import ThreadPoolExecutor
@@ -128,31 +129,23 @@ def check_subdomain(domain: str, config: ScanConfig):
     healthy_ip = set()
     problem_ip = set()
 
-    print("validate as file")
+    subdomain = []
     if os.path.isfile(domain):
+        print("validate as file")
         with open(domain, "r")as f:
-            raw_data = f.read()
+            subdomain = [line.strip() for line in f.read().splitlines() if line.strip()]
     elif "." in domain and not domain.endswith(".txt"):
         print(f"Search for subdomain for {domain}")
-        url = f"https://api.hackertarget.com/hostsearch/?q={domain}"
-        response = requests.get(url=url)
-
-        if "error" in response.text.lower():
-            print(f"[x] Error occurred: {response.text}")
-            exit(1)
-        if response.status_code != 200:
-            print("[x] Failed to access Hacker Target API")
-            exit(1)
-        raw_data = response.text
+        subdomain = get_subdomain(domain, config.all_resource, config.source)
     else:
-        print("[x] Invalid Domain")
+        print("[x] Invalid domain or file path!")
         exit(0)
 
-    lines = raw_data.strip().split("\n")
+    if not subdomain:
+        print("[x] No subdomain found!")
+        exit(0)
 
-    subdomain = [line.split(",")[0] for line in lines]
-
-    print(f"[*]Found {len(subdomain)} potential hosts, starting validation\n")
+    print(f"[*] Found {len(subdomain)} potential hosts, starting validation\n")
 
     wildcard_baseline = check_wildcard(get_domain_root(subdomain[0]))
     try:
@@ -206,7 +199,8 @@ def check_wildcard(domain: str):
         wild_title = get_html_title(res)
         baselines["http"] = {"title": wild_title, "status": wild_status, "size": wild_size}
     except Exception as e:
-        print(f"[x] HTTP Wildcard check failed: {e}")
+        #print(f"[x] HTTP Wildcard check failed: {e}")
+        ...
 
     try:
         res = requests.get(f"https://{wild_sub}", allow_redirects=False, timeout=5, verify=False)
@@ -215,5 +209,6 @@ def check_wildcard(domain: str):
         wild_title = get_html_title(res)
         baselines["https"] = {"title": wild_title, "status": wild_status, "size": wild_size}
     except Exception as e:
-        print(f"[x] HTTPS Wildcard check failed: {e}")
+        #print(f"[x] HTTPS Wildcard check failed: {e}")
+        ...
     return baselines
