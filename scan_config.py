@@ -15,3 +15,5 @@ class ScanConfig:
     save_file_plain: bool
     save_file_json: bool
     delay: float
+    source: str
+    all_resource: bool

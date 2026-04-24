@@ -47,6 +47,13 @@ def main():
     )
 
     parser.add_argument(
+        "-s",
+        "--source",
+        type=str,
+        help="Select source from domain tract record you want to use"
+    )
+
+    parser.add_argument(
         "-t",
         "--timeout",
         type=float,
@@ -126,6 +133,12 @@ def main():
     )
 
     parser.add_argument(
+        "-all",
+        action="store_true",
+        help="Use all available resource"
+    )
+
+    parser.add_argument(
         "-o",
         "--output",
         action="store_true",
@@ -154,7 +167,9 @@ def main():
         show_tech=args.header_tech,
         save_file_plain=args.output,
         save_file_json=args.output_json,
-        delay=args.delay
+        delay=args.delay,
+        source=args.source,
+        all_resource=args.all
     )
 
     if args.redirect and not args.verbose:
