@@ -37,7 +37,7 @@ def validate_subdomain(sub, wildcard_baseline):
         http_content = h.get("length", b"")
         http_redir = h.get("location", "-")
         http_title = h.get("http_title", "")
-        http_header = h.get("header", "") if isinstance(h.get("header"), dict) else {}
+        http_header = h.get("header") if h.get("header") is not None else {}
 
         https_status = s.get("https_status")
         https_server = s.get("https_server", "Unknown")
@@ -45,7 +45,7 @@ def validate_subdomain(sub, wildcard_baseline):
         https_content = s.get("length", b"")
         https_redir = s.get("location", "-")
         https_title = s.get("https_title", "")
-        https_header = h.get("header", "") if isinstance(s.get("header"), dict) else {}
+        https_header = s.get("header") if s.get("header") is not None else {}
 
 
         ##Validate Wildcard

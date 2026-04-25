@@ -36,7 +36,8 @@ def https_request(sub, time_out):
             "location": res.headers.get("Location", "-"),
             "https_latency": int(res.elapsed.total_seconds() * 1000),
             "length": len(res.content),
-            "timestamp": res.headers.get('Date')
+            "timestamp": res.headers.get('Date'),
+            "header": res.headers
         }
         return https_dict
     except requests.exceptions.SSLError:

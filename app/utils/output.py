@@ -102,28 +102,24 @@ def show_output(sub_info: Mapping[str, Any]):
 
     status = show_verbose(http_status, https_status, show_redir, http_redir, https_redir, is_verbose)
 
+    output_buffer = []
     output_line = (f"{sub: <40} | {ip_address: <15} | {server: <15} | "
               f"HTTP: {str(h_out): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
               f"HTTPS: {str(s_out): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
 
-    if server == None:
-        return
-    elif http_status == 200 or sub_info["https_status"] == 200:
-        print(f"{sub_info['signing']} {colorize(output_line, color)}")
+    output_buffer.append(f"{sub_info['signing']} {colorize(output_line, color)}")
 
-        if show_title:
-            print_title(http_title, https_title, color)
-        if show_tech:
-            print_tech(http_tech, https_tech, color)
-        return True, ip_address
-    elif not show_available:
-        print(f"{sub_info['signing']} {colorize(output_line, color)}")
+    if show_title:
+        titles = get_title(http_title, https_title)
+        output_buffer.extend([colorize(t, color) for t in titles])
+    if show_tech:
+        tech = get_tech(http_tech, https_tech)
+        output_buffer.extend([colorize(t, color) for t in tech])
 
-        if show_title:
-            print_title(http_title, https_title, color)
-        if show_tech:
-            print_tech(http_tech, https_tech, color)
-        return False, ip_address
+    if server is not None:
+        if (200 in [http_status, https_status]) or not show_available:
+            print("\n".join(output_buffer))
+            return 200 in [http_status, https_status], ip_address
     return False, "No IP"
 
 
@@ -138,8 +134,8 @@ def show_quiet(is_okay: int, sub: str = None, ip: str= None, show_ip: bool = Fal
         else:
             print(sub)
 
-def print_title(http_title: str, https_title: str, color):
-    ignore_list = ["301 moved permanently", "302 found", "object moved", "welcome to nginx!", "welcome to openresty"]
+def get_title(http_title: str, https_title: str):
+    ignore_list = ["301 moved permanently", "302 found", "object moved", "welcome to nginx!", "welcome to openresty", "403 forbidden", "404 not found"]
 
     def is_valid(title: str):
         if not title and title.strip() in ["-", ""]:
@@ -150,19 +146,22 @@ def print_title(http_title: str, https_title: str, color):
 
     h = http_title if is_valid(http_title) else None
     s = https_title if is_valid(https_title) else None
+    lines = []
 
     if h == s and h:
-        print(colorize(f"        |_title: [{h}]", color))
+        lines.append(f"        |_title: [{h}]")
     else:
         if h:
-            print(colorize(f"        |_http title : [{h}]", color))
+            lines.append(f"        |_http title : [{h}]")
         if s:
-            print(colorize(f"        |_https title: {s}", color))
+            lines.append(f"        |_https title: {s}")
+    return lines
 
-def print_tech(http_header, https_header, color):
+def get_tech(http_header, https_header):
     target_headers = ["X-Powered-By", "X-Generator", "Server"]
+    lines = []
 
-    def get_tech(header):
+    def get_tech_list(header):
         found = []
         for h in target_headers:
             val = header.get(h)
@@ -170,16 +169,17 @@ def print_tech(http_header, https_header, color):
                 found.append(val)
         return ", ".join(found) if found else None
 
-    h_tech = get_tech(http_header)
-    s_tech = get_tech(https_header)
+    h_tech = get_tech_list(http_header)
+    s_tech = get_tech_list(https_header)
 
     if h_tech == s_tech and h_tech:
-        print(colorize(f"        |_Tech      : {h_tech}", color))
+        lines.append(f"        |_Tech      : {h_tech}")
     else:
         if h_tech:
-            print(colorize(f"        |_http Tech : {h_tech}", color))
-        elif s_tech:
-            print(colorize(f"        |_https Tech: {s_tech}", color))
+            lines.append(f"        |_http Tech : {h_tech}")
+        if s_tech:
+            lines.append(f"        |_https Tech: {s_tech}")
+    return lines
 
 def clean_redirect(url, max_len: int = 30):
     if not url or url in ["-", "None"]:
