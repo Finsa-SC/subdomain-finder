@@ -53,7 +53,6 @@ def main():
     )
 
     parser.add_argument(
-        "-t",
         "--timeout",
         type=float,
         default=TIMEOUT,
@@ -61,7 +60,6 @@ def main():
     )
 
     parser.add_argument(
-        "-th",
         "--thread",
         type=int,
         default=THREAD,
@@ -98,7 +96,7 @@ def main():
     )
 
     parser.add_argument(
-        "-nW",
+        "-w",
         "--no-wildcard",
         action="store_true",
         help="Skip subdomain if wildcard dns detected in that's subdomain"
@@ -118,7 +116,7 @@ def main():
     )
 
     parser.add_argument(
-        "-T",
+        "-t",
         "--title",
         action="store_true",
         help="Print title of page below subdomain"
