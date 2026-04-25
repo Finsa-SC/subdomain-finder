@@ -1,4 +1,6 @@
-from core import check_subdomain, ScanConfig
+from core import check_subdomain
+from models import scan_config
+from models import ScanConfig
 
 from dotenv import load_dotenv
 import os
@@ -130,6 +132,12 @@ def main():
     )
 
     parser.add_argument(
+        "-a",
+        "--aggressive",
+        action="store_true",
+        help="Enable all informative flags (-v, -T, -x, etc.)")
+
+    parser.add_argument(
         "-all",
         action="store_true",
         help="Use all available resource"
@@ -149,7 +157,16 @@ def main():
         help="Save recon result as json with detail information"
     )
 
+    parser.add_argument(
+        "--color",
+        action="store_true",
+        help="Color output text"
+    )
+
     args = parser.parse_args()
+
+    if args.aggressive:
+        args.verbose = args.title = args.header_tech = args.redirect = True
 
     config = ScanConfig(
         timeout=args.timeout,
@@ -166,8 +183,11 @@ def main():
         save_file_json=args.output_json,
         delay=args.delay,
         source=args.source,
-        all_resource=args.all
+        all_resource=args.all,
+        color=args.color
     )
+    scan_config.current = config
+
 
     if args.redirect and not args.verbose:
         parser.error("redirect need verbose to show")
@@ -175,9 +195,9 @@ def main():
         parser.error("Ip need quiet to show")
 
     if args.domain:
-        check_subdomain(args.domain, config)
+        check_subdomain(args.domain)
     elif args.domain_list:
-        check_subdomain(args.domain_list, config)
+        check_subdomain(args.domain_list)
 
 if __name__ == "__main__":
     main()

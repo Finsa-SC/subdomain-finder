@@ -2,25 +2,39 @@ from pathlib import Path
 from typing import Any, Mapping
 from urllib.parse import urlparse
 from utils import is_cloudflare
+from models import scan_config
+
+
+# ANSI Colors (Soft/Standard)
+RESET = "\033[0m"
+LIME = "\033[38;5;112m"
+YELLOW = "\033[33m"
+WHITE = "\033[37m"
+CYAN   = "\033[36m"
+DIM = "\033[2m"
+
+def colorize(text: Any, color_code: str):
+    return f"{color_code}{text}{RESET}"
 
 def print_legend():
-    print("""
+    print(f"""
         [ LEGEND ]
-        [*] : Host is UP (HTTP/HTTPS 200)
-        [!] : Access Forbidden (403)
-        [?] : Wildcard Subdomain Detected
-        [-] : Host is Down / Other Status
+        {colorize("[+]", LIME)} : Host is UP (HTTP/HTTPS 200)
+        {colorize("[!]", YELLOW)} : Access Forbidden (403)
+        {colorize("[?]", CYAN)} : Wildcard Subdomain Detected
+        {colorize("[-]", WHITE)} : Host is Down / Other Status
         """)
 
 def sign(http_status, https_status, is_wildcard) -> str:
+    config = scan_config.current
     if is_wildcard:
-        return "[?]"
+        return colorize("[?]", CYAN if config.color else WHITE)
     elif http_status == 200 or https_status == 200:
-        return "[*]"
+        return colorize("[+]", LIME if config.color else WHITE)
     elif http_status == 403 or https_status == 403:
-        return "[!]"
+        return colorize("[!]", YELLOW if config.color else WHITE)
     else:
-        return "[-]"
+        return colorize("[-]", WHITE)
 
 def show_verbose(http_status, https_status, show_redir=False, http_redir=None, https_redir=None, is_verbose: bool = False) -> str:
     status = []
@@ -48,13 +62,14 @@ def show_verbose(http_status, https_status, show_redir=False, http_redir=None, h
     return ""
 
 def show_output(sub_info: Mapping[str, Any]):
+    config = scan_config.current
     server = sub_info["server"]
     sub = sub_info["subdomain"]
     http_status = sub_info["http_status"]
     https_status = sub_info["https_status"]
     http_title = sub_info["http_title"]
     https_title = sub_info["https_title"]
-    signing = sub_info["signing"]
+    is_wildcard = sub_info["is_wildcard"]
     http_latency = sub_info["http_latency"]
     https_latency = sub_info["https_latency"]
     ip_address = sub_info["ip_address"]
@@ -69,33 +84,45 @@ def show_output(sub_info: Mapping[str, Any]):
     http_redir = sub_info["http_redir"]
     https_redir = sub_info["https_redir"]
 
-    status = show_verbose(http_status, https_status, show_redir, http_redir, https_redir, is_verbose)
 
+    # Set Color
+    if not config.color:
+        color = WHITE
+    elif is_wildcard:
+        color = CYAN
+    elif 200 in [http_status, https_status]:
+        color = LIME
+    elif 403 in [http_status, https_status]:
+        color = YELLOW
+    else:
+        color = WHITE
 
     h_out = http_status if isinstance(http_status, int) else "-"
     s_out = https_status if isinstance(https_status, int) else "-"
 
+    status = show_verbose(http_status, https_status, show_redir, http_redir, https_redir, is_verbose)
+
+    output_line = (f"{sub: <40} | {ip_address: <15} | {server: <15} | "
+              f"HTTP: {str(h_out): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
+              f"HTTPS: {str(s_out): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
+
     if server == None:
         return
     elif http_status == 200 or sub_info["https_status"] == 200:
-        print(f"{sub_info['signing']} {sub: <40} | {sub_info['ip_address']: <15} | {sub_info['server']: <15} | "
-              f"HTTP: {str(h_out): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
-              f"HTTPS: {str(h_out): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
+        print(f"{sub_info['signing']} {colorize(output_line, color)}")
 
         if show_title:
-            print_title(http_title, https_title)
+            print_title(http_title, https_title, color)
         if show_tech:
-            print_tech(http_tech, https_tech)
+            print_tech(http_tech, https_tech, color)
         return True, ip_address
     elif not show_available:
-        print(f"{signing} {sub: <40} | {ip_address: <15} | {server: <15} | "
-              f"HTTP: {str(s_out): <3} ({f'{http_latency}ms)' if http_latency else 'N/A)': <7} | "
-              f"HTTPS: {str(s_out): <3} ({f'{https_latency}ms)' if https_latency else 'N/A)': <7} {status}")
+        print(f"{sub_info['signing']} {colorize(output_line, color)}")
 
         if show_title:
-            print_title(http_title, https_title)
+            print_title(http_title, https_title, color)
         if show_tech:
-            print_tech(http_tech, https_tech)
+            print_tech(http_tech, https_tech, color)
         return False, ip_address
     return False, "No IP"
 
@@ -111,7 +138,7 @@ def show_quiet(is_okay: int, sub: str = None, ip: str= None, show_ip: bool = Fal
         else:
             print(sub)
 
-def print_title(http_title: str, https_title: str):
+def print_title(http_title: str, https_title: str, color):
     ignore_list = ["301 moved permanently", "302 found", "object moved", "welcome to nginx!", "welcome to openresty"]
 
     def is_valid(title: str):
@@ -125,14 +152,14 @@ def print_title(http_title: str, https_title: str):
     s = https_title if is_valid(https_title) else None
 
     if h == s and h:
-        print(f"        |_title: [{h}]")
+        print(colorize(f"        |_title: [{h}]", color))
     else:
         if h:
-            print(f"        |_http title : [{h}]")
+            print(colorize(f"        |_http title : [{h}]", color))
         if s:
-            print(f"        |_https title: {s}")
+            print(colorize(f"        |_https title: {s}", color))
 
-def print_tech(http_header, https_header):
+def print_tech(http_header, https_header, color):
     target_headers = ["X-Powered-By", "X-Generator", "Server"]
 
     def get_tech(header):
@@ -147,12 +174,12 @@ def print_tech(http_header, https_header):
     s_tech = get_tech(https_header)
 
     if h_tech == s_tech and h_tech:
-        print(f"        |_Tech      : {h_tech}")
+        print(colorize(f"        |_Tech      : {h_tech}", color))
     else:
         if h_tech:
-            print(f"        |_http Tech : {h_tech}")
+            print(colorize(f"        |_http Tech : {h_tech}", color))
         elif s_tech:
-            print(f"        |_https Tech: {s_tech}")
+            print(colorize(f"        |_https Tech: {s_tech}", color))
 
 def clean_redirect(url, max_len: int = 30):
     if not url or url in ["-", "None"]:

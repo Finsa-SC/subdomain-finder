@@ -1,7 +1,7 @@
 ##Module Function
 from utils import sign, show_output, show_quiet, save_file_healthy, save_file_problem, check_result_dir, save_file_as_json, ReconStats, print_legend
 from .request import http_request, https_request, get_html_title
-from .scan_config import ScanConfig
+from models import scan_config
 from sources import get_subdomain
 
 ##Module Package
@@ -15,7 +15,8 @@ import requests
 
 stats = ReconStats()
 
-def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
+def validate_subdomain(sub, wildcard_baseline):
+    config = scan_config.current
     try:
         try:
             ip_address = socket.gethostbyname(sub)
@@ -84,7 +85,8 @@ def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
             "show_title": config.show_title,
             "http_tech": http_header,
             "https_tech": https_header,
-            "show_tech": config.show_tech
+            "show_tech": config.show_tech,
+            "is_wildcard": is_any_wildcard
         }
         dict_info = {
             "timestamp": timestamp,
@@ -125,7 +127,8 @@ def validate_subdomain(sub, config: ScanConfig, wildcard_baseline):
         return False, "No IP", None
 
 
-def check_subdomain(domain: str, config: ScanConfig):
+def check_subdomain(domain: str):
+    config = scan_config.current
     healthy_ip = set()
     problem_ip = set()
 
@@ -156,7 +159,7 @@ def check_subdomain(domain: str, config: ScanConfig):
         with ThreadPoolExecutor(max_workers=config.thread) as executor:
             futures = []
             for s in subdomain:
-                futures.append(executor.submit(validate_subdomain, s, config, wildcard_baseline))
+                futures.append(executor.submit(validate_subdomain, s, wildcard_baseline))
 
                 if config.delay > 0:
                     sleep(config.delay)

@@ -17,3 +17,6 @@ class ScanConfig:
     delay: float
     source: str
     all_resource: bool
+    color: bool
+
+current: 'ScanConfig' = None
