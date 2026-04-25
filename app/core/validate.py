@@ -131,11 +131,13 @@ def check_subdomain(domain: str, config: ScanConfig):
 
     subdomain = []
     if os.path.isfile(domain):
-        print("validate as file")
+        if not config.quiet:
+            print("validate as file")
         with open(domain, "r")as f:
             subdomain = [line.strip() for line in f.read().splitlines() if line.strip()]
     elif "." in domain and not domain.endswith(".txt"):
-        print(f"Search for subdomain for {domain}")
+        if not config.quiet:
+            print(f"Search for subdomain for {domain}")
         subdomain = get_subdomain(domain, config.all_resource, config.source)
     else:
         print("[x] Invalid domain or file path!")
@@ -145,7 +147,8 @@ def check_subdomain(domain: str, config: ScanConfig):
         print("[x] No subdomain found!")
         exit(0)
 
-    print(f"[*] Found {len(subdomain)} potential hosts, starting validation\n")
+    if not config.quiet:
+        print(f"[*] Found {len(subdomain)} potential hosts, starting validation\n")
 
     wildcard_baseline = check_wildcard(get_domain_root(subdomain[0]))
     try:
@@ -178,7 +181,8 @@ def check_subdomain(domain: str, config: ScanConfig):
             root = get_domain_root(subdomain[0])
             save_file_as_json(root, sub_list)
 
-        stats.summary()
+        if not config.quiet:
+            stats.summary()
 
     except KeyboardInterrupt:
         print("\n[!]Process stop by user...")

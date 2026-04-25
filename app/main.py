@@ -3,6 +3,7 @@ from core import check_subdomain, ScanConfig
 from dotenv import load_dotenv
 import os
 import argparse
+from utils import print_banner
 
 
 ### Init env
@@ -179,4 +180,4 @@ def main():
         check_subdomain(args.domain_list, config)
 
 if __name__ == "__main__":
-   main()
+    main()
