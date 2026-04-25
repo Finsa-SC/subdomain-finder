@@ -1,5 +1,5 @@
 from typing import Any, Mapping
-
+from urllib.parse import urlparse
 from save_file import is_cloudflare
 
 def sign(http_status, https_status, is_wildcard) -> str:
@@ -27,9 +27,9 @@ def show_verbose(http_status, https_status, show_redir=False, http_redir=None, h
             status.append("HTTPS FORBIDDEN")
         if show_redir:
             if http_redir and http_redir not in ["-", "None"]:
-                status.append(f"HTTP REDIR: {http_redir}")
+                status.append(f"HTTP REDIR: {clean_redirect(http_redir)}")
             if https_redir and https_redir not in ["-", "None"]:
-                status.append(f"HTTPS REDIR: {https_redir}")
+                status.append(f"HTTPS REDIR: {clean_redirect(https_redir)}")
 
     else:
         status.append("(OK)" if http_status == 200 or https_status == 200 else "[!Forbidden]" if http_status == 403 or https_status == 403 else "")
@@ -143,3 +143,16 @@ def print_tech(http_header, https_header):
             print(f"        |_http Tech : {h_tech}")
         elif s_tech:
             print(f"        |_https Tech: {s_tech}")
+
+def clean_redirect(url, max_len: int = 30):
+    if not url or url in ["-", "None"]:
+        return None
+    parsed = urlparse(url)
+    target = parsed.netloc if parsed.netloc else parsed.path
+
+    if not parsed.netloc and parsed.path:
+        target = parsed.path
+
+    if len(target) > max_len:
+        return target[:max_len-3] + "..."
+    return target

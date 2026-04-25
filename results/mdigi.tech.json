@@ -1,0 +1,1152 @@
+[
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:06 GMT",
+        "subdomain": "api-touna.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 610,
+            "https": 394
+        },
+        "redirect": {
+            "http": "https://api-touna.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7281
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:06 GMT",
+        "subdomain": "billcenter-wonosobo.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 614,
+            "https": 389
+        },
+        "redirect": {
+            "http": "https://billcenter-wonosobo.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7331
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:06 GMT",
+        "subdomain": "billing-center.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 609,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://billing-center.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:06 GMT",
+        "subdomain": "botfighter.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 622,
+            "https": 397
+        },
+        "redirect": {
+            "http": "https://botfighter.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7286
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:06 GMT",
+        "subdomain": "bphtb-benteng.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": 200
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 617,
+            "https": 405
+        },
+        "redirect": {
+            "http": "https://bphtb-benteng.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 11840
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:06 GMT",
+        "subdomain": "bphtb-cilacap.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 607,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://bphtb-cilacap.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:06 GMT",
+        "subdomain": "bphtb-jambi.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 599,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://bphtb-jambi.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:06 GMT",
+        "subdomain": "bphtb-klaten.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 605,
+            "https": 393
+        },
+        "redirect": {
+            "http": "https://bphtb-klaten.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7296
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:06 GMT",
+        "subdomain": "bphtb-magelang.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 631,
+            "https": 386
+        },
+        "redirect": {
+            "http": "https://bphtb-magelang.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7306
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:06 GMT",
+        "subdomain": "bphtb-merangin.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 611,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://bphtb-merangin.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:07 GMT",
+        "subdomain": "bphtb-rembang.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 200
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 385,
+            "https": 911
+        },
+        "redirect": {
+            "http": "https://bphtb-rembang.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 46278
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:07 GMT",
+        "subdomain": "bphtb-sarolangun.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 348,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://bphtb-sarolangun.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:07 GMT",
+        "subdomain": "bphtb-tuban.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 362,
+            "https": 233
+        },
+        "redirect": {
+            "http": "https://bphtb-tuban.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7291
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:07 GMT",
+        "subdomain": "cetakmassal-sambas.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 394,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://cetakmassal-sambas.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:07 GMT",
+        "subdomain": "clfy.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 399,
+            "https": 1285
+        },
+        "redirect": {
+            "http": "https://clfy.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7256
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:07 GMT",
+        "subdomain": "console-minio.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 393,
+            "https": 254
+        },
+        "redirect": {
+            "http": "https://console-minio.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7301
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:08 GMT",
+        "subdomain": "dashboard-jambi.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 130,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://dashboard-jambi.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:08 GMT",
+        "subdomain": "e-hisab-pati.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 146,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://e-hisab-pati.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:08 GMT",
+        "subdomain": "elayanan.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 141,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://elayanan.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:09 GMT",
+        "subdomain": "elayanan-batang.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 139,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://elayanan-batang.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:10 GMT",
+        "subdomain": "elayanan-benteng.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 200
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 139,
+            "https": 2847
+        },
+        "redirect": {
+            "http": "https://elayanan-benteng.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 51142
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:10 GMT",
+        "subdomain": "elayanan-magelang.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 132,
+            "https": 216
+        },
+        "redirect": {
+            "http": "https://elayanan-magelang.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7321
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:10 GMT",
+        "subdomain": "elayanan-nganjuk.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 137,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://elayanan-nganjuk.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:10 GMT",
+        "subdomain": "elayanan-rembang.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 143,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://elayanan-rembang.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:10 GMT",
+        "subdomain": "elayanan-tebingtinggi.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 126,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://elayanan-tebingtinggi.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:10 GMT",
+        "subdomain": "elayanan-touna.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 128,
+            "https": 231
+        },
+        "redirect": {
+            "http": "https://elayanan-touna.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7306
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:10 GMT",
+        "subdomain": "elayanan-tuban.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 128,
+            "https": 227
+        },
+        "redirect": {
+            "http": "https://elayanan-tuban.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7306
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:11 GMT",
+        "subdomain": "email.mdigi.tech",
+        "ip_address": "34.110.180.34",
+        "status": {
+            "http": 404,
+            "https": 404
+        },
+        "server": "Unknown",
+        "latency": {
+            "http": 318,
+            "https": 704
+        },
+        "redirect": {
+            "http": "-",
+            "https": "-"
+        },
+        "size": {
+            "http": 19,
+            "https": 19
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:11 GMT",
+        "subdomain": "epayment-jambi.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 125,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://epayment-jambi.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:11 GMT",
+        "subdomain": "epotensi-solo.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 135,
+            "https": 220
+        },
+        "redirect": {
+            "http": "https://epotensi-solo.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7301
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:11 GMT",
+        "subdomain": "epotensi-tebingtinggi.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 125,
+            "https": 224
+        },
+        "redirect": {
+            "http": "https://epotensi-tebingtinggi.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7341
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:11 GMT",
+        "subdomain": "erp.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": 200
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 138,
+            "https": 199
+        },
+        "redirect": {
+            "http": "https://erp.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 37429
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:11 GMT",
+        "subdomain": "erp2.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 404
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 152,
+            "https": 272
+        },
+        "redirect": {
+            "http": "https://erp2.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7801
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:12 GMT",
+        "subdomain": "esptpd-kerinci.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 404
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 118,
+            "https": 397
+        },
+        "redirect": {
+            "http": "https://esptpd-kerinci.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7816
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:12 GMT",
+        "subdomain": "esptpd-tuban.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 323,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://esptpd-tuban.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:12 GMT",
+        "subdomain": "etax-benteng.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 200
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 121,
+            "https": 926
+        },
+        "redirect": {
+            "http": "https://etax-benteng.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 563
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:12 GMT",
+        "subdomain": "exum.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 114,
+            "https": 208
+        },
+        "redirect": {
+            "http": "https://exum.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7256
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:12 GMT",
+        "subdomain": "jenkins.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 114,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://jenkins.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:12 GMT",
+        "subdomain": "masjidquba.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 117,
+            "https": 204
+        },
+        "redirect": {
+            "http": "https://masjidquba.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7286
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:13 GMT",
+        "subdomain": "pajak-sarolangun.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 1124,
+            "https": 260
+        },
+        "redirect": {
+            "http": "https://pajak-sarolangun.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7316
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:12 GMT",
+        "subdomain": "paypbb-benteng.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 200
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 118,
+            "https": 233
+        },
+        "redirect": {
+            "http": "https://paypbb-benteng.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 9670
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:13 GMT",
+        "subdomain": "paypbb-merangin.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 122,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://paypbb-merangin.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:13 GMT",
+        "subdomain": "paypbb-sambas.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 147,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://paypbb-sambas.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:13 GMT",
+        "subdomain": "pbb-benteng.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": 200
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 183,
+            "https": 296
+        },
+        "redirect": {
+            "http": "https://pbb-benteng.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 10177
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:13 GMT",
+        "subdomain": "pbb-online.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 178,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://pbb-online.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:13 GMT",
+        "subdomain": "pbbonline-kerinci.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": 200
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 122,
+            "https": 816
+        },
+        "redirect": {
+            "http": "https://pbbonline-kerinci.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 64692
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:13 GMT",
+        "subdomain": "pbbonline-tebingtinggi.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 120,
+            "https": 241
+        },
+        "redirect": {
+            "http": "https://pbbonline-tebingtinggi.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7346
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:13 GMT",
+        "subdomain": "qris-pbb-cilacap.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": 526
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 123,
+            "https": 471
+        },
+        "redirect": {
+            "http": "https://qris-pbb-cilacap.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 7316
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:14 GMT",
+        "subdomain": "rundeck.mdigi.tech",
+        "ip_address": "104.21.77.217",
+        "status": {
+            "http": 301,
+            "https": null
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 128,
+            "https": null
+        },
+        "redirect": {
+            "http": "https://rundeck.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 0
+        },
+        "posible_wildcard": false
+    },
+    {
+        "timestamp": "Mon, 20 Apr 2026 02:51:14 GMT",
+        "subdomain": "shs-agrofarm.mdigi.tech",
+        "ip_address": "172.67.211.232",
+        "status": {
+            "http": 301,
+            "https": 200
+        },
+        "server": "cloudflare",
+        "latency": {
+            "http": 138,
+            "https": 220
+        },
+        "redirect": {
+            "http": "https://shs-agrofarm.mdigi.tech/",
+            "https": "-"
+        },
+        "size": {
+            "http": 0,
+            "https": 1462
+        },
+        "posible_wildcard": false
+    }
+]
