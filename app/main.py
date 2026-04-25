@@ -1,12 +1,9 @@
-from concurrent.futures import thread
-
-from validate import check_subdomain
-from save_file import save_file_healthy, save_file_problem
-from scan_config import ScanConfig
+from core import check_subdomain, ScanConfig
 
 from dotenv import load_dotenv
 import os
 import argparse
+from utils import print_banner
 
 
 ### Init env
@@ -183,4 +180,4 @@ def main():
         check_subdomain(args.domain_list, config)
 
 if __name__ == "__main__":
-   main()
+    main()

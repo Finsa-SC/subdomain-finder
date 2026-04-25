@@ -1,10 +1,10 @@
-from output import sign, show_output, show_quiet
-from request import http_request, https_request, get_html_title
-from save_file import save_file_healthy, save_file_problem, check_result_dir, save_file_as_json
-from scan_config import ScanConfig
-from summary import ReconStats
-from sources.handler import get_subdomain
+##Module Function
+from utils import sign, show_output, show_quiet, save_file_healthy, save_file_problem, check_result_dir, save_file_as_json, ReconStats, print_legend
+from .request import http_request, https_request, get_html_title
+from .scan_config import ScanConfig
+from sources import get_subdomain
 
+##Module Package
 from time import sleep
 from concurrent.futures import ThreadPoolExecutor
 import os
@@ -131,11 +131,13 @@ def check_subdomain(domain: str, config: ScanConfig):
 
     subdomain = []
     if os.path.isfile(domain):
-        print("validate as file")
+        if not config.quiet:
+            print("validate as file")
         with open(domain, "r")as f:
             subdomain = [line.strip() for line in f.read().splitlines() if line.strip()]
     elif "." in domain and not domain.endswith(".txt"):
-        print(f"Search for subdomain for {domain}")
+        if not config.quiet:
+            print(f"Search for subdomain for {domain}")
         subdomain = get_subdomain(domain, config.all_resource, config.source)
     else:
         print("[x] Invalid domain or file path!")
@@ -145,7 +147,9 @@ def check_subdomain(domain: str, config: ScanConfig):
         print("[x] No subdomain found!")
         exit(0)
 
-    print(f"[*] Found {len(subdomain)} potential hosts, starting validation\n")
+    if not config.quiet:
+        print(print_legend())
+        print(f"[*] Found {len(subdomain)} potential hosts, starting validation\n")
 
     wildcard_baseline = check_wildcard(get_domain_root(subdomain[0]))
     try:
@@ -178,7 +182,8 @@ def check_subdomain(domain: str, config: ScanConfig):
             root = get_domain_root(subdomain[0])
             save_file_as_json(root, sub_list)
 
-        stats.summary()
+        if not config.quiet:
+            stats.summary()
 
     except KeyboardInterrupt:
         print("\n[!]Process stop by user...")

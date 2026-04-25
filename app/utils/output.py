@@ -1,6 +1,16 @@
+from pathlib import Path
 from typing import Any, Mapping
 from urllib.parse import urlparse
-from save_file import is_cloudflare
+from utils import is_cloudflare
+
+def print_legend():
+    print("""
+        [ LEGEND ]
+        [*] : Host is UP (HTTP/HTTPS 200)
+        [!] : Access Forbidden (403)
+        [?] : Wildcard Subdomain Detected
+        [-] : Host is Down / Other Status
+        """)
 
 def sign(http_status, https_status, is_wildcard) -> str:
     if is_wildcard:
@@ -156,3 +166,12 @@ def clean_redirect(url, max_len: int = 30):
     if len(target) > max_len:
         return target[:max_len-3] + "..."
     return target
+
+def print_banner():
+    base_path = Path(__file__).resolve().parent.parent.parent
+    banner_path = base_path / "assets" / "banner.txt"
+    try:
+        with open(banner_path, "r") as f:
+            print(f.read())
+    except FileNotFoundError:
+        print("Banner file not found!!")
