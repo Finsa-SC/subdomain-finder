@@ -99,7 +99,7 @@ id_rsa.pub
 # =========================
 # Project Directory
 # =========================
-recon_result
+results
 *.txt
 !banner.txt
 test.py

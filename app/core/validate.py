@@ -1,10 +1,10 @@
-from output import sign, show_output, show_quiet
-from request import http_request, https_request, get_html_title
-from save_file import save_file_healthy, save_file_problem, check_result_dir, save_file_as_json
-from scan_config import ScanConfig
-from summary import ReconStats
-from sources.handler import get_subdomain
+##Module Function
+from utils import sign, show_output, show_quiet, save_file_healthy, save_file_problem, check_result_dir, save_file_as_json, ReconStats
+from .request import http_request, https_request, get_html_title
+from .scan_config import ScanConfig
+from sources import get_subdomain
 
+##Module Package
 from time import sleep
 from concurrent.futures import ThreadPoolExecutor
 import os

@@ -11,8 +11,8 @@ CLOUDFLARE_IPS = [
 ]
 
 def check_result_dir():
-    if not os.path.exists("recon_result"):
-        os.makedirs("recon_result")
+    if not os.path.exists("results"):
+        os.makedirs("results")
 
 def is_cloudflare(ip):
     ip_obj = ipaddress.ip_address(ip)
@@ -22,7 +22,7 @@ def is_cloudflare(ip):
     return False
 
 def save_file_healthy(domain: str, ip_sets: set[str]):
-    file_name = f"recon_result/{domain}_healthy_ip.txt"
+    file_name = f"results/{domain}_healthy_ip.txt"
     with open(file_name, "w") as file:
         for ip in ip_sets:
             if not is_cloudflare(ip):
@@ -30,7 +30,7 @@ def save_file_healthy(domain: str, ip_sets: set[str]):
     print(f"Success save healthy ip as {file_name}")
 
 def save_file_problem(domain: str, ip_sets: set[str]):
-    file_name = f"recon_result/{domain}_problem_ip.txt"
+    file_name = f"results/{domain}_problem_ip.txt"
     with open(file_name, "w") as file:
         for ip in ip_sets:
             if not is_cloudflare(ip):
@@ -38,7 +38,7 @@ def save_file_problem(domain: str, ip_sets: set[str]):
     print(f"Success save problem ip as {file_name}")
 
 def save_file_as_json(domain: str ,dict_sub):
-    file_name = f"recon_result/{domain}.json"
+    file_name = f"results/{domain}.json"
     with open(file_name, "w")as file:
         json.dump(dict_sub, file, indent=4)
     print(f"Success save JSON result as {file_name}")

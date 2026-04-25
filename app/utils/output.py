@@ -1,6 +1,6 @@
 from typing import Any, Mapping
 from urllib.parse import urlparse
-from save_file import is_cloudflare
+from utils import is_cloudflare
 
 def sign(http_status, https_status, is_wildcard) -> str:
     if is_wildcard:

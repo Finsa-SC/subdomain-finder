@@ -1,8 +1,4 @@
-from concurrent.futures import thread
-
-from validate import check_subdomain
-from save_file import save_file_healthy, save_file_problem
-from scan_config import ScanConfig
+from core import check_subdomain, ScanConfig
 
 from dotenv import load_dotenv
 import os
