@@ -1,5 +1,5 @@
 ##Module Function
-from utils import sign, show_output, show_quiet, save_file_healthy, save_file_problem, check_result_dir, save_file_as_json, ReconStats
+from utils import sign, show_output, show_quiet, save_file_healthy, save_file_problem, check_result_dir, save_file_as_json, ReconStats, print_legend
 from .request import http_request, https_request, get_html_title
 from .scan_config import ScanConfig
 from sources import get_subdomain
@@ -148,6 +148,7 @@ def check_subdomain(domain: str, config: ScanConfig):
         exit(0)
 
     if not config.quiet:
+        print(print_legend())
         print(f"[*] Found {len(subdomain)} potential hosts, starting validation\n")
 
     wildcard_baseline = check_wildcard(get_domain_root(subdomain[0]))

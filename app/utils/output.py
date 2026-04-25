@@ -2,7 +2,15 @@ from pathlib import Path
 from typing import Any, Mapping
 from urllib.parse import urlparse
 from utils import is_cloudflare
-import pathlib
+
+def print_legend():
+    print("""
+        [ LEGEND ]
+        [*] : Host is UP (HTTP/HTTPS 200)
+        [!] : Access Forbidden (403)
+        [?] : Wildcard Subdomain Detected
+        [-] : Host is Down / Other Status
+        """)
 
 def sign(http_status, https_status, is_wildcard) -> str:
     if is_wildcard:
